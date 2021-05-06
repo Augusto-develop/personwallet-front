@@ -1,0 +1,36 @@
+<div class="card analytic-user">
+    <div class="card-block-big text-center">
+        <i :class="{{icon}}"></i>
+        <h1>{{total}}</h1>
+        <h4>{{titulo}}</h4>        
+    </div>
+    <div class="card-footer p-0 accordion-block">        
+        <div id="accordion-{{titulo}}" role="tablist" aria-multiselectable="true">
+            <div class="accordion-panel">
+                <div class="accordion-heading" role="tab" id="headingOne">
+                    <h3 class="card-title accordion-title">
+                    <a  class="accordion-msg" data-toggle="collapse" data-parent="#accordion" href="#collapseOne-{{titulo}}" 
+                    aria-expanded="true" aria-controls="collapseOne">
+                      Mostrar Detalhes
+                    </a>
+                  </h3>
+                </div>
+                <div id="collapseOne-{{titulo}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="accordion-content p-0">
+                        <div class="table-responsive analytic-table">
+				            <table class="table">
+				                <tbody>
+				                    <tr *ngFor="let detail of detalhes">
+				                        <td><span class="count text-primary">{{detail.descricao}}</span></td>
+				                        <td>{{detail.valor}}</td>
+				                    </tr> 				                                      
+				                </tbody>
+				            </table>
+				        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
