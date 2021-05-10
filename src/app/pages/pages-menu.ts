@@ -2,11 +2,34 @@ import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: 'E-commerce',
-    icon: 'shopping-cart-outline',
-    link: '/pages/home',
+    title: 'Controle',
+    icon: 'keypad-outline',
+    link: '/pages/controle',
     home: true,
   },
+  {
+    title: 'Cadastro',
+    icon: 'layout-outline',
+    children: [
+      {
+        title: 'Carteiras',
+        link: '/pages/cadastro/carteira',
+      },
+      {
+        title: 'Receitas',
+        link: '/pages/layout/list',
+      },
+      {
+        title: 'Despesas',
+        link: '/pages/layout/infinite-list',
+      },
+      {
+        title: 'Faturas',
+        link: '/pages/layout/accordion',
+      },
+    ],
+  },
+  /*,
   {
     title: 'E-commerce',
     icon: 'shopping-cart-outline',
@@ -204,7 +227,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
-  {
+  */{
     title: 'Tables & Data',
     icon: 'grid-outline',
     children: [
@@ -218,7 +241,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
-  {
+  /*{
     title: 'Miscellaneous',
     icon: 'shuffle-2-outline',
     children: [
@@ -249,5 +272,5 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/auth/reset-password',
       },
     ],
-  },
+  },*/
 ];

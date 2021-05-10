@@ -1,0 +1,15 @@
+.table-faturas tr{
+	cursor: pointer;
+}
+
+.table-faturas tr:hover{
+	background-color: #505050;
+}
+
+.table-faturas tr:active{
+	background-color: #909090;
+}
+
+.table-faturas tr.active{
+	background-color: #505050;
+}

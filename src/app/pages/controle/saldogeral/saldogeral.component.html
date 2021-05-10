@@ -1,0 +1,35 @@
+
+<div class="dark-layout">
+<div class="card analytic-user">
+  <div class="card-block-big text-center">
+    <i :class="{{icon}}"></i>
+    <h1>{{total}}</h1>
+    <h4>{{titulo}}</h4>
+  </div>
+  <div class="card-footer p-0 accordion-block">
+    <div class="accordions-container row">
+      <div class="accordion-container col-md-12 col-lg-12 col-xxxl-12">
+        <nb-accordion multi>
+          <nb-accordion-item>
+            <nb-accordion-item-header matRipple  class="m-0 p-2">
+              Detalhamento
+            </nb-accordion-item-header>
+            <nb-accordion-item-body class="p-0">
+              <div class="table-responsive p-0">
+                <table class="table">
+                    <tbody>
+                      <tr *ngFor="let detail of detalhes">
+                        <td><span class="count text-primary">{{detail.descricao}}</span></td>
+                        <td class="text-right">{{detail.valor}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
