@@ -1,4 +1,4 @@
-import { Saldo } from "./saldo";
+import { Saldo } from './saldo';
 
 export interface SaldoGeral {
     totalCarteiras: string;

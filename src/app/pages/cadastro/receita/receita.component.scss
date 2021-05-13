@@ -6,7 +6,7 @@
   }
 }
 
-::ng-deep input.form-control{
+::ng-deep input.form-control, ::ng-deep select.form-control{
   color: #495057 !important;
 }
 

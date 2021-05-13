@@ -4,6 +4,19 @@ import { NbCardModule, NbIconModule, NbInputModule, NbTreeGridModule } from '@ne
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ThemeModule } from '../../@theme/theme.module';
 import { CadastroRoutingModule, routedComponents } from './cadastro-routing.module';
+import { CustomInputEditorComponent, ReceitaComponent } from './receita/receita.component';
+import { FormsModule } from '@angular/forms';
+import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
+
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+  align: 'right',
+  allowNegative: true,
+  decimal: ',',
+  precision: 2,
+  prefix: '',
+  suffix: '',
+  thousands: '.',
+};
 
 @NgModule({
   imports: [
@@ -14,10 +27,17 @@ import { CadastroRoutingModule, routedComponents } from './cadastro-routing.modu
     ThemeModule,
     CadastroRoutingModule,
     Ng2SmartTableModule,
+    FormsModule,
+    CurrencyMaskModule,
   ],
   declarations: [
     ...routedComponents,
     CadastroComponent,
+    ReceitaComponent,
+    CustomInputEditorComponent,
+  ],
+  providers: [
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
   ],
 })
 export class CadastroModule { }

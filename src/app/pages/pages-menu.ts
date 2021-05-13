@@ -17,7 +17,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Receitas',
-        link: '/pages/layout/list',
+        link: '/pages/cadastro/receita',
       },
       {
         title: 'Despesas',

@@ -1,16 +1,25 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Carteira } from './../../../@core/database/carteira.service';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { SmartTableData } from '../../../@core/data/smart-table';
+import { CarteiraService } from '../../../@core/database/carteira.service';
 
 @Component({
   selector: 'ngx-carteira',
   templateUrl: './carteira.component.html',
-  styleUrls: ['./carteira.component.scss']
+  styleUrls: ['./carteira.component.scss'],
 })
 export class CarteiraComponent {
 
+  DataCarteiras: any = [];
+  ItemCarteira: Carteira;
+
   settings = {
+    actions: {
+      columnTitle: 'Ações',
+      position: 'right',
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -21,36 +30,18 @@ export class CarteiraComponent {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
+      confirmSave: true,
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: true,
     },
     columns: {
-      /*id: {
-        title: 'ID',
-        type: 'number',
-      },*/
-      firstName: {
+      descricao: {
         title: 'Descrição',
         type: 'string',
+        filter: false,
       },
-      /*lastName: {
-        title: 'Last Name',
-        type: 'string',
-      },
-      username: {
-        title: 'Username',
-        type: 'string',
-      },
-      email: {
-        title: 'E-mail',
-        type: 'string',
-      },
-      age: {
-        title: 'Age',
-        type: 'number',
-      },*/
     },
     pager: {
       display: false,
@@ -59,13 +50,18 @@ export class CarteiraComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private service: SmartTableData, private http: HttpClient) {
-    const data = this.service.getData();
-    /*this.source.load(data);*/
+  constructor(private service: SmartTableData, private http: HttpClient, private carteiraService: CarteiraService) {
+    carteiraService.getCarteiras().subscribe((resultado) => {
+      this.DataCarteiras = resultado;
+      this.source.load(this.DataCarteiras);
+    });
   }
 
   onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
+    if (window.confirm('Tem certeza de que deseja excluir?')) {
+      this.ItemCarteira = event.data;
+      this.carteiraService.delete(this.ItemCarteira.id)
+      .subscribe(() => {}, err => console.error(err));
       event.confirm.resolve();
     } else {
       event.confirm.reject();
@@ -74,24 +70,32 @@ export class CarteiraComponent {
 
   onCreateConfirm(event): void {
     if (window.confirm('Deseja Salvar este item?')) {
-      /*this.http.post(`http://localhost:8081/carteiras/add`, { descricao: 'ITAU TESTE' });*/
-
-
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type':  'application/json',
-          'Cache-Control': 'no-cache',
-          'Authorization': 'cc824028-1778-49c0-b28d-2f603793ef64',
-        }),
-      };
-
-      const values = { 'descricao': 'ITAU TESTE'};
-      this.http.post('http://localhost:8081/carteiras/add', values, httpOptions);
-
+      this.ItemCarteira = event.newData;
+      this.carteiraService.save(this.ItemCarteira)
+      .subscribe(() => {}, err => console.error(err));
       event.confirm.resolve();
     } else {
       event.confirm.reject();
     }
   }
 
+  onEditConfirm(event): void {
+    if (window.confirm('Deseja alterar este item?')) {
+      this.ItemCarteira = event.newData;
+      this.carteiraService.save(this.ItemCarteira)
+      .subscribe(() => {}, err => console.error(err));
+      event.confirm.resolve();
+    } else {
+      event.confirm.reject();
+    }
+  }
+
+  onSearch(query: string = '') {
+    this.source.setFilter([
+      {
+        field: 'descricao',
+        search: query,
+      },
+    ], false);
+  }
 }
