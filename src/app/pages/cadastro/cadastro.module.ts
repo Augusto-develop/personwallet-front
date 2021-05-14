@@ -10,7 +10,7 @@ import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: 'right',
-  allowNegative: true,
+  allowNegative: false,
   decimal: ',',
   precision: 2,
   prefix: '',

@@ -135,25 +135,39 @@ export class ReceitaComponent {
   onCreateConfirm(event): void {
     if (window.confirm('Deseja Salvar este item?')) {
       this.ItemReceita = event.newData;
+      const carteiradescr = this.ItemReceita.carteira;
       this.ItemReceita.carteira = this.ItemReceita.carteira.substring(0, 2);
       this.ItemReceita.fixa = this.ItemReceita.fixa === 'Sim' ? 'true' : 'false';
+      this.ItemReceita.valor = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+      .format(parseFloat(this.ItemReceita.valor));
+      this.ItemReceita.valor = this.ItemReceita.valor.replace(/R\$/gi, '').trim();
       /*this.ItemReceita.datareceb = formatDate(this.ItemReceita.datareceb, 'y-LL-dd', 'en-US');*/
-      this.receitaService.save(this.ItemReceita)
-      .subscribe(() => {}, err => console.error(err));
-      event.confirm.resolve();
+      this.receitaService.save(this.ItemReceita).subscribe(() => {}, err => console.error(err));
+
+      this.ItemReceita.carteira = carteiradescr;
+      this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
+      event.confirm.resolve(this.ItemReceita);
     } else {
       event.confirm.reject();
     }
   }
 
-  onEditConfirm(event): void {
+  onEditConfirm(event, element): void {
     if (window.confirm('Deseja alterar este item?')) {
       this.ItemReceita = event.newData;
+      const carteiradescr = this.ItemReceita.carteira;
       this.ItemReceita.carteira = this.ItemReceita.carteira.substring(0, 2);
       this.ItemReceita.fixa = this.ItemReceita.fixa === 'Sim' ? 'true' : 'false';
-      this.receitaService.save(this.ItemReceita)
-      .subscribe(() => {}, err => console.error(err));
-      event.confirm.resolve();
+      this.ItemReceita.descricao = this.ItemReceita.descricao.trim();
+      this.ItemReceita.valor = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+      .format(parseFloat(this.ItemReceita.valor));
+      this.ItemReceita.valor = this.ItemReceita.valor.replace(/R\$/gi, '').trim();
+
+      this.receitaService.save(this.ItemReceita).subscribe(() => {}, err => console.error(err));
+
+      this.ItemReceita.carteira = carteiradescr;
+      this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
+      event.confirm.resolve(this.ItemReceita);
     } else {
       event.confirm.reject();
     }
@@ -196,16 +210,17 @@ export class ReceitaComponent {
 
 @Component({
   selector: 'ngx-input-editor',
-  template: `<input type="text"
-    [value]="cell.newValue"
+  template: `<input
     [(ngModel)]="cell.newValue"
     [name]="cell.getId()"
     [placeholder]="cell.getTitle()"
     [disabled]="!cell.isEditable()"
+    (click)="onClick.emit($event)"
     (keydown.enter)="onEdited.emit($event)"
     (keydown.esc)="onStopEditing.emit()"
     currencyMask
-    class="form-control ng-pristine ng-valid ng-touched"/>`,
+    class="form-control ng-pristine ng-valid ng-touched"
+    type="text" maxlength="12"/>`,
 })
 export class CustomInputEditorComponent extends DefaultEditor {
 
@@ -215,6 +230,7 @@ export class CustomInputEditorComponent extends DefaultEditor {
 }
 
 /*[(ngModel)]="cell.newValue"
-
-(click)="onClick.emit($event)"
+  [value]="cell.newValue"
+    [(ngModel)]="cell.newValue"
+    currencyMask
 */

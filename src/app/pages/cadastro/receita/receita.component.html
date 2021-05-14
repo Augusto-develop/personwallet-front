@@ -9,7 +9,7 @@
     <ng2-smart-table [settings]="settings" [source]="source"
     (deleteConfirm)="onDeleteConfirm($event)"
     (createConfirm)="onCreateConfirm($event)"
-    (editConfirm)="onEditConfirm($event)">
+    (editConfirm)="onEditConfirm($event, this)">
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>
