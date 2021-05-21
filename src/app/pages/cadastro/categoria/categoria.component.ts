@@ -1,19 +1,20 @@
-import { Carteira } from './../../../@core/database/carteira.service';
+
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { SmartTableData } from '../../../@core/data/smart-table';
-import { CarteiraService } from '../../../@core/database/carteira.service';
+import { Categoria, CategoriaService } from '../../../@core/database/categoria.service';
+
 
 @Component({
-  selector: 'ngx-carteira',
-  templateUrl: './carteira.component.html',
-  styleUrls: ['./carteira.component.scss'],
+  selector: 'ngx-categoria',
+  templateUrl: './categoria.component.html',
+  styleUrls: ['./categoria.component.scss'],
 })
-export class CarteiraComponent {
+export class CategoriaComponent {
 
-  DataCarteiras: any = [];
-  ItemCarteira: Carteira;
+  DataCategorias: any = [];
+  ItemCategoria: Categoria;
 
   settings = {
     actions: {
@@ -50,17 +51,17 @@ export class CarteiraComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private service: SmartTableData, private http: HttpClient, private carteiraService: CarteiraService) {
-    carteiraService.getCarteiras().subscribe((resultado) => {
-      this.DataCarteiras = resultado;
-      this.source.load(this.DataCarteiras);
+  constructor(private service: SmartTableData, private http: HttpClient, private categoriaService: CategoriaService) {
+    categoriaService.getCategorias().subscribe((resultado) => {
+      this.DataCategorias = resultado;
+      this.source.load(this.DataCategorias);
     });
   }
 
   onDeleteConfirm(event): void {
     if (window.confirm('Tem certeza de que deseja excluir?')) {
-      this.ItemCarteira = event.data;
-      this.carteiraService.delete(this.ItemCarteira.id)
+      this.ItemCategoria = event.data;
+      this.categoriaService.delete(this.ItemCategoria.id)
       .subscribe(() => {
         event.confirm.resolve();
       }, err => console.error(err));
@@ -71,11 +72,11 @@ export class CarteiraComponent {
 
   onCreateConfirm(event): void {
     if (window.confirm('Deseja Salvar este item?')) {
-      this.ItemCarteira = event.newData;
-      this.carteiraService.save(this.ItemCarteira)
-      .subscribe((result: Carteira) => {
-        this.ItemCarteira.id = result.id;
-        event.confirm.resolve(this.ItemCarteira);
+      this.ItemCategoria = event.newData;
+      this.categoriaService.save(this.ItemCategoria)
+      .subscribe((result: Categoria) => {
+        this.ItemCategoria.id = result.id;
+        event.confirm.resolve(this.ItemCategoria);
       }, err => console.error(err));
     } else {
       event.confirm.reject();
@@ -84,8 +85,8 @@ export class CarteiraComponent {
 
   onEditConfirm(event): void {
     if (window.confirm('Deseja alterar este item?')) {
-      this.ItemCarteira = event.newData;
-      this.carteiraService.save(this.ItemCarteira)
+      this.ItemCategoria = event.newData;
+      this.categoriaService.save(this.ItemCategoria)
       .subscribe(() => {
         event.confirm.resolve();
       }, err => console.error(err));

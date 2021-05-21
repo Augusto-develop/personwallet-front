@@ -1,0 +1,19 @@
+
+<nb-card>
+  <nb-card-header>
+    Faturas
+    <input #search class="search" type="text" placeholder="Filtro"
+    (keydown.enter)="onSearch(search.value)" style="float:right">
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source"
+    (deleteConfirm)="onDeleteConfirm($event)"
+    (createConfirm)="onCreateConfirm($event)"
+    (editConfirm)="onEditConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+  <nb-card-footer>
+
+  </nb-card-footer>
+</nb-card>

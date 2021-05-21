@@ -1,7 +1,12 @@
 <nb-card>
-  <nb-card-header>Receitas</nb-card-header>
+  <nb-card-header>Despesas</nb-card-header>
   <nb-card-body>
     <div class="row">
+      <div class="col-lg-auto">
+        <nb-select matRipple style="width: 350px;" [(ngModel)]="faturaoption">
+          <nb-option matRipple *ngFor="let itemfatura of faturasSelect" value="{{itemfatura.id}}">{{itemfatura.descricao}}</nb-option>
+        </nb-select>
+      </div>
       <div class="col-lg-auto">
         <nb-select matRipple style="width: 200px;" [(ngModel)]="mesref">
           <nb-option matRipple value="01">Janeiro</nb-option>
@@ -22,7 +27,7 @@
         <input type="text" nbInput fullWidth placeholder="Ano" maxlength="4" class="p-2" [(ngModel)]="anoref">
       </div>
       <nb-actions size="medium" fullWidth>
-        <nb-action matRipple style="cursor: pointer;" (click)="onPesquisaReceitas()">
+        <nb-action matRipple style="cursor: pointer;" (click)="onPesquisaDespesas()">
           <nb-icon class="action-icon" icon="search-outline"></nb-icon>
           <span>Pesquisar</span>
         </nb-action>
@@ -45,6 +50,6 @@
     </ng2-smart-table>
   </nb-card-body>
   <nb-card-footer>
-    <label class="text-info">Total: &nbsp;</label><label  id="smart-total-receita" [innerHTML]="totalReceitas"></label>
+    <label class="text-info">Total: &nbsp;</label><label  id="smart-total-receita" [innerHTML]="totalDespesas"></label>
   </nb-card-footer>
 </nb-card>

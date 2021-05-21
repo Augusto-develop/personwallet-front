@@ -1,7 +1,8 @@
+import { Despesa, DespesaService } from './../../../@core/database/despesa.service';
 import { Component, OnInit } from '@angular/core';
+import { Fatura, FaturaFechada, FaturaService } from '../../../@core/database/fatura.service';
 import { Conta } from '../conta';
 import { FATURAS } from '../data-faturas';
-import { Fatura } from '../fatura';
 
 @Component({
   selector: 'ngx-listfaturas',
@@ -21,15 +22,33 @@ import { Fatura } from '../fatura';
 export class ListfaturasComponent {
 
   public faturas = FATURAS;
-   public contas: Conta[] | undefined;
-   public selectedItem: Fatura | undefined;
+   public contas: Despesa[] | undefined;
+   public selectedItem: FaturaFechada | undefined;
    public animal!: string;
    public name!: string;
+    ResultGetExtrato: FaturaFechada[];
+    mesfat = '05';
+    anofat = '2021';
 
-   constructor() {}
+   constructor(private faturaService: FaturaService, private despesaService: DespesaService) {
+    this.onPesquisaFaturas();
+   }
 
-  public onSelect(fatura: Fatura): void {
-    this.contas = fatura.contas;
-    this.selectedItem = fatura;
+  public onSelect(faturaFechada: FaturaFechada): void {
+    this.despesaService.getDespesas(faturaFechada.id, faturaFechada.mesfat, faturaFechada.anofat)
+      .subscribe((resultado: Despesa[]) => {
+      this.contas = resultado;
+    });
+    this.selectedItem = faturaFechada;
+  }
+
+  onPesquisaFaturas() {
+    this.faturaService.getExtrato(this.mesfat, this.anofat).subscribe((resultado: FaturaFechada[]) => {
+      this.ResultGetExtrato = resultado;
+      /*const listExtrato = [];
+      Array.from(this.ResultGetExtrato).forEach(element => {
+        listExtrato.push(element);
+      });*/
+    });
   }
 }

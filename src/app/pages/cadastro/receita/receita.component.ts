@@ -3,14 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { DefaultEditor, LocalDataSource } from 'ng2-smart-table';
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { Receita, ReceitaService } from '../../../@core/database/receita.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UtilService } from '../../../@core/utils/util.service';
 
 @Component({
   selector: 'ngx-receita',
   templateUrl: './receita.component.html',
   styleUrls: ['./receita.component.scss'],
 })
-export class ReceitaComponent {
+export class ReceitaComponent implements OnInit{
 
   ResultGetCarteiras: Carteira[];
   ResultGetReceitas: Receita[];
@@ -48,13 +49,14 @@ export class ReceitaComponent {
         filter: false,
       },
       datareceb: {
-        title: 'Data',
+        title: 'Dia',
         type: 'string',
         filter: false,
       },
       valor: {
         title: 'Valor',
-        type: 'string',
+        type: 'html',
+        class: 'smart-column-left',
         filter: false,
         editor: {
           type: 'custom',
@@ -92,41 +94,81 @@ export class ReceitaComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  totalReceitas = '0,00';
+  mesref: string = '05';
+  anoref: string = '2021';
 
   constructor(private service: SmartTableData, private http: HttpClient,
     private receitaService: ReceitaService, private carteiraService: CarteiraService) {
-        receitaService.getReceitas().subscribe((resultado: Receita[]) => {
-        this.ResultGetReceitas = resultado;
-        const listReceitas = [];
-        Array.from(this.ResultGetReceitas).forEach(element => {
-          element.carteira = element.carteira + ' - ' + element.innercarteira.descricao;
-          element.fixa = element.fixa ? 'Sim' : 'Não';
-          listReceitas.push(element);
+      this.onPesquisaReceitas();
+      carteiraService.getCarteiras().subscribe((resultado: Carteira[]) => {
+        this.ResultGetCarteiras = resultado;
+        const listCarteiras = [];
+        Array.from(this.ResultGetCarteiras).forEach(element => {
+          listCarteiras.push({
+            value: element.id + ' - ' + element.descricao,
+            title: element.id + ' - ' + element.descricao,
+          });
         });
-        this.source.load(listReceitas);
-    });
-
-    carteiraService.getCarteiras().subscribe((resultado: Carteira[]) => {
-      this.ResultGetCarteiras = resultado;
-      const listCarteiras = [];
-      Array.from(this.ResultGetCarteiras).forEach(element => {
-        listCarteiras.push({
-          value: element.id + ' - ' + element.descricao,
-          title: element.id + ' - ' + element.descricao,
-        });
+        const mySettings = this.settings;
+        mySettings.columns.carteira.editor.config.list = listCarteiras;
+        this.settings = Object.assign ({}, mySettings);
       });
-      const mySettings = this.settings;
-      mySettings.columns.carteira.editor.config.list = listCarteiras;
-      this.settings = Object.assign ({}, mySettings);
+  }
+
+  ngOnInit() {
+  }
+
+  onPesquisaReceitas() {
+    this.receitaService.getReceitas(this.mesref, this.anoref).subscribe((resultado: Receita[]) => {
+      this.ResultGetReceitas = resultado;
+      const listReceitas = [];
+      let calcTotalReceitas = 0;
+      Array.from(this.ResultGetReceitas).forEach(element => {
+        element.carteira = element.carteira + ' - ' + element.innercarteira.descricao;
+        element.fixa = element.fixa ? 'Sim' : 'Não';
+        element.datareceb = element.datareceb.substr(0, 2);
+        listReceitas.push(element);
+        calcTotalReceitas += UtilService.converteMoedaFloat(element.valor);
+      });
+      this.source.load(listReceitas);
+      this.totalReceitas = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+      .format(calcTotalReceitas);
     });
+  }
+
+  onUpdateTotalReceita(itemReceita: Receita, action: String) {
+    this.source.getAll().then(value => {
+      let calcTotalReceitas = 0;
+      value.forEach(element => {
+        if (itemReceita.id === element.id) {
+          if (action === 'ALTER') {
+            calcTotalReceitas += UtilService.converteMoedaFloat(itemReceita.valor);
+          }
+
+          if (action === 'DELETE') {
+          }
+
+        } else {
+          calcTotalReceitas += UtilService.converteMoedaFloat(element.valor);
+        }
+      });
+      if (action === 'INSERT') {
+        calcTotalReceitas += UtilService.converteMoedaFloat(itemReceita.valor);
+      }
+      this.totalReceitas = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+      .format(calcTotalReceitas);
+  });
   }
 
   onDeleteConfirm(event): void {
     if (window.confirm('Tem certeza de que deseja excluir?')) {
       this.ItemReceita = event.data;
       this.receitaService.delete(this.ItemReceita.id)
-      .subscribe(() => {}, err => console.error(err));
-      event.confirm.resolve();
+      .subscribe(() => {
+        event.confirm.resolve();
+      this.onUpdateTotalReceita(this.ItemReceita, 'DELETE');
+      }, err => console.error(err));
     } else {
       event.confirm.reject();
     }
@@ -136,38 +178,59 @@ export class ReceitaComponent {
     if (window.confirm('Deseja Salvar este item?')) {
       this.ItemReceita = event.newData;
       const carteiradescr = this.ItemReceita.carteira;
-      this.ItemReceita.carteira = this.ItemReceita.carteira.substring(0, 2);
+
+      const splitCarteiras = this.ItemReceita.carteira.split('-');
+      this.ItemReceita.carteira = splitCarteiras[0].trim();
+
       this.ItemReceita.fixa = this.ItemReceita.fixa === 'Sim' ? 'true' : 'false';
+
       this.ItemReceita.valor = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
       .format(parseFloat(this.ItemReceita.valor));
-      this.ItemReceita.valor = this.ItemReceita.valor.replace(/R\$/gi, '').trim();
-      /*this.ItemReceita.datareceb = formatDate(this.ItemReceita.datareceb, 'y-LL-dd', 'en-US');*/
-      this.receitaService.save(this.ItemReceita).subscribe(() => {}, err => console.error(err));
 
-      this.ItemReceita.carteira = carteiradescr;
-      this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
-      event.confirm.resolve(this.ItemReceita);
+      this.ItemReceita.valor = this.ItemReceita.valor.replace(/R\$/gi, '').trim();
+      this.ItemReceita.datareceb = UtilService.zeroesq(this.ItemReceita.datareceb, 2) +
+          '/' + this.mesref + '/' + this.anoref;
+
+      this.receitaService.save(this.ItemReceita).subscribe((result: Receita) => {
+        this.ItemReceita.id = result.id;
+        this.ItemReceita.carteira = carteiradescr;
+        this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
+        this.ItemReceita.datareceb = this.ItemReceita.datareceb.substr(0, 2);
+        event.confirm.resolve(this.ItemReceita);
+        this.onUpdateTotalReceita(this.ItemReceita, 'INSERT');
+      }, err => console.error(err));
     } else {
       event.confirm.reject();
     }
   }
 
-  onEditConfirm(event, element): void {
+  onEditConfirm(event): void {
     if (window.confirm('Deseja alterar este item?')) {
       this.ItemReceita = event.newData;
       const carteiradescr = this.ItemReceita.carteira;
-      this.ItemReceita.carteira = this.ItemReceita.carteira.substring(0, 2);
+
+      const splitCarteiras = this.ItemReceita.carteira.split('-');
+      this.ItemReceita.carteira = splitCarteiras[0].trim();
+
       this.ItemReceita.fixa = this.ItemReceita.fixa === 'Sim' ? 'true' : 'false';
       this.ItemReceita.descricao = this.ItemReceita.descricao.trim();
-      this.ItemReceita.valor = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
-      .format(parseFloat(this.ItemReceita.valor));
+
+      if (this.ItemReceita.valor.toString().indexOf(',') === -1) {
+        this.ItemReceita.valor = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+        .format(parseFloat(this.ItemReceita.valor));
+      }
+
+      this.ItemReceita.datareceb = UtilService.zeroesq(this.ItemReceita.datareceb, 2) +
+        '/' + this.mesref + '/' + this.anoref;
+
       this.ItemReceita.valor = this.ItemReceita.valor.replace(/R\$/gi, '').trim();
-
-      this.receitaService.save(this.ItemReceita).subscribe(() => {}, err => console.error(err));
-
-      this.ItemReceita.carteira = carteiradescr;
-      this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
-      event.confirm.resolve(this.ItemReceita);
+      this.receitaService.save(this.ItemReceita).subscribe(() => {
+        this.ItemReceita.carteira = carteiradescr;
+        this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
+        this.ItemReceita.datareceb = this.ItemReceita.datareceb.substr(0, 2);
+        event.confirm.resolve(this.ItemReceita);
+        this.onUpdateTotalReceita(this.ItemReceita, 'ALTER');
+      }, err => console.error(err));
     } else {
       event.confirm.reject();
     }
@@ -192,9 +255,8 @@ export class ReceitaComponent {
         field: 'valor',
         search: query,
       },
-    ], false);
+    ], true);
   }
-
 
   /*columns: {
     column {
@@ -212,8 +274,8 @@ export class ReceitaComponent {
   selector: 'ngx-input-editor',
   template: `<input
     [(ngModel)]="cell.newValue"
+    [placeholder]="cell.getValue()"
     [name]="cell.getId()"
-    [placeholder]="cell.getTitle()"
     [disabled]="!cell.isEditable()"
     (click)="onClick.emit($event)"
     (keydown.enter)="onEdited.emit($event)"
@@ -228,9 +290,3 @@ export class CustomInputEditorComponent extends DefaultEditor {
     super();
   }
 }
-
-/*[(ngModel)]="cell.newValue"
-  [value]="cell.newValue"
-    [(ngModel)]="cell.newValue"
-    currencyMask
-*/

@@ -16,16 +16,20 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/cadastro/carteira',
       },
       {
-        title: 'Receitas',
-        link: '/pages/cadastro/receita',
+        title: 'Categorias',
+        link: '/pages/cadastro/categoria',
       },
       {
         title: 'Despesas',
-        link: '/pages/layout/infinite-list',
+        link: '/pages/cadastro/despesa',
       },
       {
         title: 'Faturas',
-        link: '/pages/layout/accordion',
+        link: '/pages/cadastro/fatura',
+      },
+      {
+        title: 'Receitas',
+        link: '/pages/cadastro/receita',
       },
     ],
   },

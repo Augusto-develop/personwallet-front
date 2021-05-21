@@ -1,25 +1,33 @@
+import { Categoria } from './categoria.service';
 import { Carteira } from './carteira.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { Fatura } from './fatura.service';
 
-export class Receita {
+export class Despesa {
   id: string;
-  carteira: string;
+  fatura: string;
+  anofat: string;
+  mesfat: string;
   descricao: string;
-  datareceb: string;
+  categoria: string;
+  numparc: string;
+  qtdeparc: string;
+  vencimento: string;
   valor: string;
   fixa: string;
-  innercarteira: Carteira;
+  innerfatura: Fatura;
+  innercategoria: Categoria;
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class ReceitaService {
+export class DespesaService {
 
-  endPoint = 'http://localhost:8081/receitas';
+  endPoint = 'http://localhost:8081/despesas';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -29,7 +37,7 @@ export class ReceitaService {
     },
   };
 
-  public receitas!: Receita;
+  public despesas!: Despesa;
 
   /*httpHeader = {
     headers: new HttpHeaders({
@@ -37,15 +45,15 @@ export class ReceitaService {
     }),
   };*/
 
-  getReceitas(mesref, anoref): Observable<Receita[]> {
-    return this.httpClient.get<Receita[]>(this.endPoint + '/list/' + mesref + '/' + anoref)
+  getDespesas(fatura, mesref, anoref): Observable<Despesa[]> {
+    return this.httpClient.get<Despesa[]>(this.endPoint + '/list/' + fatura + '/' + mesref + '/' + anoref)
     .pipe(
       retry(1),
       catchError(this.httpError),
     );
   }
 
-  /*getReceitas() {
+  /*getDespesas() {
     this.httpClient.get<any[]>(this.endPoint + '/list');*/
 
     /*.pipe(
@@ -54,16 +62,16 @@ export class ReceitaService {
     );*/
   /*}*/
 
-  getUser(id): Observable<Receita> {
-    return this.httpClient.get<Receita>(this.endPoint + '/get/' + id)
+  getUser(id): Observable<Despesa> {
+    return this.httpClient.get<Despesa>(this.endPoint + '/get/' + id)
     .pipe(
       retry(1),
       catchError(this.httpError),
     );
   }
 
-  save(employee): Observable<Receita> {
-    return this.httpClient.post<Receita>(this.endPoint + '/add', employee, this.httpOptions)
+  save(employee): Observable<Despesa> {
+    return this.httpClient.post<Despesa>(this.endPoint + '/add', employee, this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.httpError)
@@ -75,8 +83,8 @@ export class ReceitaService {
     .subscribe(() => {}, err => console.error(err));
   }*/
 
-  update(id, data): Observable<Receita> {
-    return this.httpClient.put<Receita>(this.endPoint + '/alter/' + id, JSON.stringify(data), this.httpOptions)
+  update(id, data): Observable<Despesa> {
+    return this.httpClient.put<Despesa>(this.endPoint + '/alter/' + id, JSON.stringify(data), this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -84,7 +92,7 @@ export class ReceitaService {
   }
 
   delete(id) {
-    return this.httpClient.delete<Receita>(this.endPoint + '/delete/' + id, this.httpOptions)
+    return this.httpClient.delete<Despesa>(this.endPoint + '/delete/' + id, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),

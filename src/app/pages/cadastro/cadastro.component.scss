@@ -1,0 +1,20 @@
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+  nb-card {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .action-icon {
+    @include nb-ltr(margin-right, 0.5rem);
+    @include nb-rtl(margin-left, 0.5rem);
+  }
+}
+
+::ng-deep input.form-control, ::ng-deep select.form-control{
+  color: #495057 !important;
+}
+
+::ng-deep .smart-column-left{
+  text-align: right;
+}

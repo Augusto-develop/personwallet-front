@@ -1,12 +1,15 @@
 import { CadastroComponent } from './cadastro.component';
 import { NgModule } from '@angular/core';
-import { NbCardModule, NbIconModule, NbInputModule, NbTreeGridModule } from '@nebular/theme';
+import { NbActionsModule, NbCardModule, NbIconModule, NbInputModule, NbSelectModule, NbTreeGridModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ThemeModule } from '../../@theme/theme.module';
 import { CadastroRoutingModule, routedComponents } from './cadastro-routing.module';
 import { CustomInputEditorComponent, ReceitaComponent } from './receita/receita.component';
 import { FormsModule } from '@angular/forms';
 import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
+import { FaturaComponent } from './fatura/fatura.component';
+import { DespesaComponent } from './despesa/despesa.component';
+import { CategoriaComponent } from './categoria/categoria.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: 'right',
@@ -29,10 +32,16 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     Ng2SmartTableModule,
     FormsModule,
     CurrencyMaskModule,
+    NbSelectModule,
+    NbActionsModule,
   ],
   declarations: [
     ...routedComponents,
     CadastroComponent,
+    CategoriaComponent,
+    DespesaComponent,
+    FaturaComponent,
+    ReceitaComponent,
     ReceitaComponent,
     CustomInputEditorComponent,
   ],
