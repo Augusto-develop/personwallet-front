@@ -119,6 +119,7 @@ export class FaturaComponent implements OnInit{
       this.ItemFatura.limite = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
       .format(parseFloat(this.ItemFatura.limite));
 
+      this.ItemFatura.descricao = this.ItemFatura.descricao.trim();
       this.ItemFatura.limite = this.ItemFatura.limite.replace(/R\$/gi, '').trim();
 
       this.faturaService.save(this.ItemFatura).subscribe((result: Fatura) => {
@@ -141,6 +142,7 @@ export class FaturaComponent implements OnInit{
         .format(parseFloat(this.ItemFatura.limite));
       }
 
+      this.ItemFatura.descricao = this.ItemFatura.descricao.trim();
       this.ItemFatura.limite = this.ItemFatura.limite.replace(/R\$/gi, '').trim();
       this.faturaService.update(this.ItemFatura.id, this.ItemFatura).subscribe(() => {
         this.ItemFatura.cartao = this.ItemFatura.cartao === 'true' ? 'Sim' : 'Não';

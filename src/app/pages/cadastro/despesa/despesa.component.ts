@@ -203,7 +203,7 @@ export class DespesaComponent implements OnInit {
       const categoriadescr = this.ItemDespesa.categoria;
       const splitCategoria = this.ItemDespesa.categoria.split('-');
 
-      this.ItemDespesa.categoria = splitCategoria[0].trim().trim();
+      this.ItemDespesa.categoria = splitCategoria[0].trim();
       this.ItemDespesa.fixa = this.ItemDespesa.fixa === 'Sim' ? 'true' : 'false';
 
       this.ItemDespesa.valor = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -246,8 +246,12 @@ export class DespesaComponent implements OnInit {
 
       this.ItemDespesa.valor = this.ItemDespesa.valor.replace(/R\$/gi, '').trim();
       if (this.ItemDespesa.innerfatura !== null) {
-        this.ItemDespesa.innerfatura.limite = this.ItemDespesa.innerfatura.limite.replace(/R\$/gi, '').trim();
-        this.ItemDespesa.innerfatura.valor = this.ItemDespesa.innerfatura.valor.replace(/R\$/gi, '').trim();
+        if (this.ItemDespesa.innerfatura.limite !== undefined) {
+          this.ItemDespesa.innerfatura.limite = this.ItemDespesa.innerfatura.limite.replace(/R\$/gi, '').trim();
+        }
+        if (this.ItemDespesa.innerfatura.valor !== undefined) {
+          this.ItemDespesa.innerfatura.valor = this.ItemDespesa.innerfatura.valor.replace(/R\$/gi, '').trim();
+        }
       }
       this.despesaService.save(this.ItemDespesa).subscribe(() => {
         this.ItemDespesa.categoria = categoriadescr;
