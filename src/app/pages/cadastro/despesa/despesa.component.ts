@@ -72,7 +72,7 @@ export class DespesaComponent implements OnInit {
         type: 'string',
         filter: false,
       },
-      categoria: {
+      categoriaid: {
         title: 'Categoria',
         type: 'html',
         filter: false,
@@ -123,12 +123,12 @@ export class DespesaComponent implements OnInit {
         const listCategorias = [];
         Array.from(this.ResultGetCategorias).forEach(element => {
           listCategorias.push({
-            value: element.id + ' - ' + element.descricao,
-            title: element.id + ' - ' + element.descricao,
+            value: element.id + ' - ' + element.descricao.trim(),
+            title: element.id + ' - ' + element.descricao.trim(),
           });
         });
         const mySettings = this.settings;
-        mySettings.columns.categoria.editor.config.list = listCategorias;
+        mySettings.columns.categoriaid.editor.config.list = listCategorias;
         this.settings = Object.assign ({}, mySettings);
       });
   }
@@ -142,9 +142,9 @@ export class DespesaComponent implements OnInit {
       const listDespesas = [];
       let calcTotalDespesas = 0;
       Array.from(this.ResultGetDespesas).forEach(element => {
-        element.fatura = element.fatura + ' - ' + element.innerfatura.descricao;
-        element.categoria = element.categoria + ' - ' + element.innercategoria.descricao;
-        element.fixa = element.fixa ? 'Sim' : 'Não';
+        /*element.faturaid = element.faturaid + ' - ' + element.faturadescr;*/
+        element.categoriaid = element.categoriaid + ' - ' + element.categoriadescr.trim();
+        element.fixa = element.fixa === 'T' ? 'Sim' : 'Não';
         /*element.vencimento = element.vencimento.substr(0, 2);*/
         listDespesas.push(element);
         calcTotalDespesas += UtilService.converteMoedaFloat(element.valor);
@@ -196,15 +196,16 @@ export class DespesaComponent implements OnInit {
     if (window.confirm('Deseja Salvar este item?')) {
       this.ItemDespesa = event.newData;
 
-      this.ItemDespesa.fatura = this.faturaoption;
+      this.ItemDespesa.faturaid = this.faturaoption;
       this.ItemDespesa.anofat = this.anoref;
       this.ItemDespesa.mesfat = this.mesref;
 
-      const categoriadescr = this.ItemDespesa.categoria;
-      const splitCategoria = this.ItemDespesa.categoria.split('-');
+      const categoriaOptionValue = this.ItemDespesa.categoriaid;
 
-      this.ItemDespesa.categoria = splitCategoria[0].trim();
-      this.ItemDespesa.fixa = this.ItemDespesa.fixa === 'Sim' ? 'true' : 'false';
+      const splitCategoria = this.ItemDespesa.categoriaid.split('-');
+      this.ItemDespesa.categoriaid = splitCategoria[0].trim();
+
+      this.ItemDespesa.fixa = this.ItemDespesa.fixa === 'Sim' ? 'T' : 'F';
 
       this.ItemDespesa.valor = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
       .format(parseFloat(this.ItemDespesa.valor));
@@ -213,8 +214,8 @@ export class DespesaComponent implements OnInit {
 
       this.despesaService.save(this.ItemDespesa).subscribe((result: Despesa) => {
         this.ItemDespesa.id = result.id;
-        this.ItemDespesa.categoria = categoriadescr;
-        this.ItemDespesa.fixa = this.ItemDespesa.fixa ? 'Sim' : 'Não';
+        this.ItemDespesa.categoriaid = categoriaOptionValue;
+        this.ItemDespesa.fixa = this.ItemDespesa.fixa === 'T' ? 'Sim' : 'Não';
         event.confirm.resolve(this.ItemDespesa);
         this.onUpdateTotalDespesa(this.ItemDespesa, 'INSERT');
       }, err => console.error(err));
@@ -227,16 +228,16 @@ export class DespesaComponent implements OnInit {
     if (window.confirm('Deseja alterar este item?')) {
       this.ItemDespesa = event.newData;
 
-      this.ItemDespesa.fatura = this.faturaoption;
+      this.ItemDespesa.faturaid = this.faturaoption;
       this.ItemDespesa.anofat = this.anoref;
       this.ItemDespesa.mesfat = this.mesref;
 
-      const categoriadescr = this.ItemDespesa.categoria;
+      const categoriaOptionValue = this.ItemDespesa.categoriaid;
 
-      const splitCategoria = this.ItemDespesa.categoria.split('-');
-      this.ItemDespesa.categoria = splitCategoria[0].trim();
+      const splitCategoria = this.ItemDespesa.categoriaid.split('-');
+      this.ItemDespesa.categoriaid = splitCategoria[0].trim();
 
-      this.ItemDespesa.fixa = this.ItemDespesa.fixa === 'Sim' ? 'true' : 'false';
+      this.ItemDespesa.fixa = this.ItemDespesa.fixa === 'Sim' ? 'T' : 'F';
       this.ItemDespesa.descricao = this.ItemDespesa.descricao.trim();
 
       if (this.ItemDespesa.valor.toString().indexOf(',') === -1) {
@@ -245,17 +246,17 @@ export class DespesaComponent implements OnInit {
       }
 
       this.ItemDespesa.valor = this.ItemDespesa.valor.replace(/R\$/gi, '').trim();
-      if (this.ItemDespesa.innerfatura !== null) {
+      /*if (this.ItemDespesa.innerfatura !== null) {
         if (this.ItemDespesa.innerfatura.limite !== undefined) {
           this.ItemDespesa.innerfatura.limite = this.ItemDespesa.innerfatura.limite.replace(/R\$/gi, '').trim();
         }
         if (this.ItemDespesa.innerfatura.valor !== undefined) {
           this.ItemDespesa.innerfatura.valor = this.ItemDespesa.innerfatura.valor.replace(/R\$/gi, '').trim();
         }
-      }
+      }*/
       this.despesaService.save(this.ItemDespesa).subscribe(() => {
-        this.ItemDespesa.categoria = categoriadescr;
-        this.ItemDespesa.fixa = this.ItemDespesa.fixa ? 'Sim' : 'Não';
+        this.ItemDespesa.categoriaid = categoriaOptionValue;
+        this.ItemDespesa.fixa = this.ItemDespesa.fixa === 'T' ? 'Sim' : 'Não';
         event.confirm.resolve(this.ItemDespesa);
         this.onUpdateTotalDespesa(this.ItemDespesa, 'ALTER');
       }, err => console.error(err));
@@ -288,7 +289,7 @@ export class DespesaComponent implements OnInit {
         search: query,
       },
       {
-        field: 'categoria',
+        field: 'categoriaid',
         search: query,
       },
     ], true);

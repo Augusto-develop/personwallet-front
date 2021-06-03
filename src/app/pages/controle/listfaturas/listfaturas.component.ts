@@ -27,7 +27,7 @@ export class ListfaturasComponent {
    public animal!: string;
    public name!: string;
     ResultGetExtrato: FaturaFechada[];
-    mesfat = '05';
+    mesfat = '06';
     anofat = '2021';
 
    constructor(private faturaService: FaturaService, private despesaService: DespesaService) {

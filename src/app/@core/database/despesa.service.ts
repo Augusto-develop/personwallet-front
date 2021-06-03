@@ -8,18 +8,18 @@ import { Fatura } from './fatura.service';
 
 export class Despesa {
   id: string;
-  fatura: string;
+  faturaid: string;
+  faturadescr: string;
   anofat: string;
   mesfat: string;
   descricao: string;
-  categoria: string;
+  categoriaid: string;
+  categoriadescr: string;
   numparc: string;
   qtdeparc: string;
   vencimento: string;
   valor: string;
   fixa: string;
-  innerfatura: Fatura;
-  innercategoria: Categoria;
 }
 
 @Injectable({
@@ -46,7 +46,7 @@ export class DespesaService {
   };*/
 
   getDespesas(fatura, mesref, anoref): Observable<Despesa[]> {
-    return this.httpClient.get<Despesa[]>(this.endPoint + '/list/' + fatura + '/' + mesref + '/' + anoref)
+    return this.httpClient.get<Despesa[]>(this.endPoint + '/' + fatura + '/' + mesref + '/' + anoref)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -63,7 +63,7 @@ export class DespesaService {
   /*}*/
 
   getUser(id): Observable<Despesa> {
-    return this.httpClient.get<Despesa>(this.endPoint + '/get/' + id)
+    return this.httpClient.get<Despesa>(this.endPoint + '/' + id)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -71,7 +71,7 @@ export class DespesaService {
   }
 
   save(employee): Observable<Despesa> {
-    return this.httpClient.post<Despesa>(this.endPoint + '/add', employee, this.httpOptions)
+    return this.httpClient.post<Despesa>(this.endPoint, employee, this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.httpError)
@@ -92,7 +92,7 @@ export class DespesaService {
   }
 
   delete(id) {
-    return this.httpClient.delete<Despesa>(this.endPoint + '/delete/' + id, this.httpOptions)
+    return this.httpClient.delete<Despesa>(this.endPoint + '/' + id, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),
