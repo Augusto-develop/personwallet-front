@@ -37,7 +37,7 @@ export class ControleComponent implements OnInit {
   onPesquisaSaldos() {
    this.onsearch = true;
    this.http.get<SaldoGeral>(
-      this.endPoint + this.anoref + '/' + this.mesref)
+      this.endPoint  + '/' +  this.anoref + '/' + this.mesref)
    .subscribe((resultado) => {
        this.dadosSaldo = resultado;
        this.onsearch = false;
