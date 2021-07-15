@@ -1,7 +1,9 @@
+import { FATURAS } from './../../pages/controle/data-faturas';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { EndPointApi } from './endPointApi.service';
 
 export class Fatura {
   id: string;
@@ -27,8 +29,7 @@ export class FaturaFechada {
   providedIn: 'root',
 })
 export class FaturaService {
-
-  endPoint = 'http://localhost:8081/faturas';
+  endPoint = EndPointApi.faturas;
 
   constructor(private httpClient: HttpClient) { }
 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { EndPointApi } from './endPointApi.service';
 
 export class Receita {
   id: string;
@@ -18,8 +19,7 @@ export class Receita {
   providedIn: 'root',
 })
 export class ReceitaService {
-
-  endPoint = 'http://localhost:8081/receitas';
+  endPoint = EndPointApi.receitas;
 
   constructor(private httpClient: HttpClient) { }
 

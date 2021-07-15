@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { EndPointApi } from './endPointApi.service';
 
 export class Categoria {
   id: string;
@@ -15,8 +16,7 @@ export class Categoria {
 })
 
 export class CategoriaService {
-
-  endPoint = 'http://localhost:8081/categorias';
+  endPoint = EndPointApi.categorias;
 
   constructor(private httpClient: HttpClient) { }
 

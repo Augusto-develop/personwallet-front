@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { EndPointApi } from './endPointApi.service';
 
 export class Carteira {
   id: string;
@@ -16,8 +17,7 @@ export class Carteira {
 })
 
 export class CarteiraService {
-
-  endPoint = 'http://localhost:8081/carteiras';
+  endPoint = EndPointApi.carteiras;
 
   constructor(private httpClient: HttpClient) { }
 

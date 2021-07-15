@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Fatura } from './fatura.service';
+import { EndPointApi } from './endPointApi.service';
 
 export class Despesa {
   id: string;
@@ -26,8 +27,7 @@ export class Despesa {
   providedIn: 'root',
 })
 export class DespesaService {
-
-  endPoint = 'http://localhost:8081/despesas';
+  endPoint = EndPointApi.despesas;
 
   constructor(private httpClient: HttpClient) { }
 

@@ -1,6 +1,7 @@
 import { SaldoGeral } from './saldogeral';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { EndPointApi } from '../../@core/database/endPointApi.service';
 
 @Component({
   selector: 'ngx-controle',
@@ -22,8 +23,10 @@ export class ControleComponent implements OnInit {
   public anoref: string = '2021';
   public onsearch: boolean = false;
 
+  public endPoint = '';
+
   constructor(private http: HttpClient) {
-      this.apiURL = 'http://localhost:8081';
+      this.endPoint = EndPointApi.saldoslist;
       this.onPesquisaSaldos();
   }
 
@@ -34,7 +37,7 @@ export class ControleComponent implements OnInit {
   onPesquisaSaldos() {
    this.onsearch = true;
    this.http.get<SaldoGeral>(
-      `http://localhost:8081/saldos/list` + '/' + this.anoref + '/' + this.mesref)
+      this.endPoint + this.anoref + '/' + this.mesref)
    .subscribe((resultado) => {
        this.dadosSaldo = resultado;
        this.onsearch = false;
