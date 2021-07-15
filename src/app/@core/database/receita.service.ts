@@ -6,12 +6,12 @@ import { retry, catchError } from 'rxjs/operators';
 
 export class Receita {
   id: string;
-  carteira: string;
+  carteiraid: string;
+  carteiradescr: string;
   descricao: string;
   datareceb: string;
   valor: string;
   fixa: string;
-  innercarteira: Carteira;
 }
 
 @Injectable({
@@ -38,12 +38,20 @@ export class ReceitaService {
   };*/
 
   getReceitas(mesref, anoref): Observable<Receita[]> {
-    return this.httpClient.get<Receita[]>(this.endPoint + '/list/' + mesref + '/' + anoref)
+    return this.httpClient.get<Receita[]>(this.endPoint + '/' + mesref + '/' + anoref)
     .pipe(
       retry(1),
       catchError(this.httpError),
     );
   }
+
+  getReceitasPorData(mesref, anoref): Observable<Receita[]> {
+   return this.httpClient.get<Receita[]>(this.endPoint + '/dias/' + mesref + '/' + anoref)
+   .pipe(
+     retry(1),
+     catchError(this.httpError),
+   );
+ }
 
   /*getReceitas() {
     this.httpClient.get<any[]>(this.endPoint + '/list');*/
@@ -55,7 +63,7 @@ export class ReceitaService {
   /*}*/
 
   getUser(id): Observable<Receita> {
-    return this.httpClient.get<Receita>(this.endPoint + '/get/' + id)
+    return this.httpClient.get<Receita>(this.endPoint + '/' + id)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -63,7 +71,7 @@ export class ReceitaService {
   }
 
   save(employee): Observable<Receita> {
-    return this.httpClient.post<Receita>(this.endPoint + '/add', employee, this.httpOptions)
+    return this.httpClient.post<Receita>(this.endPoint, employee, this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.httpError)
@@ -76,7 +84,7 @@ export class ReceitaService {
   }*/
 
   update(id, data): Observable<Receita> {
-    return this.httpClient.put<Receita>(this.endPoint + '/alter/' + id, JSON.stringify(data), this.httpOptions)
+    return this.httpClient.put<Receita>(this.endPoint + '/' + id, JSON.stringify(data), this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -84,7 +92,7 @@ export class ReceitaService {
   }
 
   delete(id) {
-    return this.httpClient.delete<Receita>(this.endPoint + '/delete/' + id, this.httpOptions)
+    return this.httpClient.delete<Receita>(this.endPoint + '/' + id, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),

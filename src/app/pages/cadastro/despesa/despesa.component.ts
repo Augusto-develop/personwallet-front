@@ -105,7 +105,7 @@ export class DespesaComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   totalDespesas = '0,00';
   faturaoption = '';
-  mesref: string = '05';
+  mesref: string = '07';
   anoref: string = '2021';
   faturasSelect: Fatura[];
 

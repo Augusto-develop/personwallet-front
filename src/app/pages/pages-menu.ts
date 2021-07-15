@@ -31,6 +31,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Receitas',
         link: '/pages/cadastro/receita',
       },
+      {
+        title: 'Pagamento',
+        link: '/pages/cadastro/pagamento',
+      },
     ],
   },
   /*,

@@ -10,6 +10,8 @@ import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng
 import { FaturaComponent } from './fatura/fatura.component';
 import { DespesaComponent } from './despesa/despesa.component';
 import { CategoriaComponent } from './categoria/categoria.component';
+import { PagamentoComponent } from './pagamento/pagamento.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: 'right',
@@ -24,6 +26,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
 @NgModule({
   imports: [
     NbCardModule,
+    DragDropModule,
     NbTreeGridModule,
     NbIconModule,
     NbInputModule,
@@ -44,6 +47,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     ReceitaComponent,
     ReceitaComponent,
     CustomInputEditorComponent,
+    PagamentoComponent,
   ],
   providers: [
     { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }

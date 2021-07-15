@@ -6,6 +6,7 @@ import { ReceitaComponent } from './receita/receita.component';
 import { FaturaComponent } from './fatura/fatura.component';
 import { DespesaComponent } from './despesa/despesa.component';
 import { CategoriaComponent } from './categoria/categoria.component';
+import { PagamentoComponent } from './pagamento/pagamento.component';
 
 const routes2: Routes = [{
   path: '',
@@ -30,6 +31,10 @@ const routes2: Routes = [{
     {
       path: 'receita',
       component: ReceitaComponent,
+    },
+    {
+      path: 'pagamento',
+      component: PagamentoComponent,
     },
   ],
 }];

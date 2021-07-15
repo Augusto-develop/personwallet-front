@@ -72,6 +72,7 @@ export class CarteiraComponent {
   onCreateConfirm(event): void {
     if (window.confirm('Deseja Salvar este item?')) {
       this.ItemCarteira = event.newData;
+      this.ItemCarteira.ativo = true;
       this.carteiraService.save(this.ItemCarteira)
       .subscribe((result: Carteira) => {
         this.ItemCarteira.id = result.id;
@@ -85,6 +86,7 @@ export class CarteiraComponent {
   onEditConfirm(event): void {
     if (window.confirm('Deseja alterar este item?')) {
       this.ItemCarteira = event.newData;
+      this.ItemCarteira.ativo = true;
       this.carteiraService.save(this.ItemCarteira)
       .subscribe(() => {
         event.confirm.resolve();

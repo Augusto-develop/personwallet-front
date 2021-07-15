@@ -6,6 +6,7 @@ import { retry, catchError } from 'rxjs/operators';
 export class Carteira {
   id: string;
   descricao: string;
+  ativo: boolean;
   /*email: string;
   phone: number;*/
 }

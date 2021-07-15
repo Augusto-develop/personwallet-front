@@ -5,8 +5,6 @@
           <div class="card-header">
               <h5>Extrato Mensal</h5>
               <div class="f-right">
-                  <label class="label label-success">Pago</label>
-                  <label class="label label-danger">Aberto</label>
               </div>
           </div>
           <div class="card-block table-border-style">
@@ -18,7 +16,12 @@
                                   <span class="count text-primary">{{faturaFechada.descricao}}</span>
                                   <span class="table-msg">{{faturaFechada.diavenc !== "" ? faturaFechada.diavenc + '/' + faturaFechada.mesfat + '/' + faturaFechada.anofat : "Vencimento Variado"}}</span>
                               </td>
-                              <td>{{faturaFechada.valor}}</td>
+                              <td>
+                                 <span>{{faturaFechada.valor}}</span>
+                                 <span *ngIf="faturaFechada.status == 'PG'" class="table-msg"><label class="label label-success">Pago</label>{{faturaFechada.pago}}</span>
+                                 <span *ngIf="faturaFechada.status == 'PC'" class="table-msg"><label class="label label-info">Parcial</label>{{faturaFechada.pago}}</span>
+                                 <span *ngIf="faturaFechada.status == 'AB'" class="table-msg"><label class="label label-danger">Aberto</label></span>
+                              </td>
                           </tr>
                       </tbody>
                   </table>
@@ -55,7 +58,7 @@
                                         <td>{{conta.descricao}}</td>
                                         <td class="text-right">{{conta.valor}}</td>
                                         <td class="text-left">{{conta.numparc+'/'+conta.qtdeparc}}</td>
-                                        <td>{{conta.innercategoria.descricao}}</td>
+                                        <td>{{conta.categoriadescr}}</td>
                                     </tr>
                                 </tbody>
                             </table>

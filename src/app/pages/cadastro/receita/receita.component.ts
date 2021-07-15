@@ -63,7 +63,7 @@ export class ReceitaComponent implements OnInit{
           component: CustomInputEditorComponent,
         },
       },
-      carteira: {
+      carteiraid: {
         title: 'Carteira',
         type: 'html',
         filter: false,
@@ -95,7 +95,7 @@ export class ReceitaComponent implements OnInit{
 
   source: LocalDataSource = new LocalDataSource();
   totalReceitas = '0,00';
-  mesref: string = '05';
+  mesref: string = '07';
   anoref: string = '2021';
 
   constructor(private service: SmartTableData, private http: HttpClient,
@@ -111,7 +111,7 @@ export class ReceitaComponent implements OnInit{
           });
         });
         const mySettings = this.settings;
-        mySettings.columns.carteira.editor.config.list = listCarteiras;
+        mySettings.columns.carteiraid.editor.config.list = listCarteiras;
         this.settings = Object.assign ({}, mySettings);
       });
   }
@@ -125,7 +125,7 @@ export class ReceitaComponent implements OnInit{
       const listReceitas = [];
       let calcTotalReceitas = 0;
       Array.from(this.ResultGetReceitas).forEach(element => {
-        element.carteira = element.carteira + ' - ' + element.innercarteira.descricao;
+        element.carteiraid = element.carteiraid + ' - ' + element.carteiradescr;
         element.fixa = element.fixa ? 'Sim' : 'Não';
         element.datareceb = element.datareceb.substr(0, 2);
         listReceitas.push(element);
@@ -177,10 +177,10 @@ export class ReceitaComponent implements OnInit{
   onCreateConfirm(event): void {
     if (window.confirm('Deseja Salvar este item?')) {
       this.ItemReceita = event.newData;
-      const carteiradescr = this.ItemReceita.carteira;
+      const carteiradescr = this.ItemReceita.carteiradescr;
 
-      const splitCarteiras = this.ItemReceita.carteira.split('-');
-      this.ItemReceita.carteira = splitCarteiras[0].trim();
+      const splitCarteiras = this.ItemReceita.carteiraid.split('-');
+      this.ItemReceita.carteiraid = splitCarteiras[0].trim();
 
       this.ItemReceita.fixa = this.ItemReceita.fixa === 'Sim' ? 'true' : 'false';
 
@@ -193,7 +193,7 @@ export class ReceitaComponent implements OnInit{
 
       this.receitaService.save(this.ItemReceita).subscribe((result: Receita) => {
         this.ItemReceita.id = result.id;
-        this.ItemReceita.carteira = carteiradescr;
+        this.ItemReceita.carteiradescr = carteiradescr;
         this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
         this.ItemReceita.datareceb = this.ItemReceita.datareceb.substr(0, 2);
         event.confirm.resolve(this.ItemReceita);
@@ -207,10 +207,10 @@ export class ReceitaComponent implements OnInit{
   onEditConfirm(event): void {
     if (window.confirm('Deseja alterar este item?')) {
       this.ItemReceita = event.newData;
-      const carteiradescr = this.ItemReceita.carteira;
+      const carteiradescr = this.ItemReceita.carteiraid;
 
-      const splitCarteiras = this.ItemReceita.carteira.split('-');
-      this.ItemReceita.carteira = splitCarteiras[0].trim();
+      const splitCarteiras = this.ItemReceita.carteiraid.split('-');
+      this.ItemReceita.carteiraid = splitCarteiras[0].trim();
 
       this.ItemReceita.fixa = this.ItemReceita.fixa === 'Sim' ? 'true' : 'false';
       this.ItemReceita.descricao = this.ItemReceita.descricao.trim();
@@ -225,7 +225,7 @@ export class ReceitaComponent implements OnInit{
 
       this.ItemReceita.valor = this.ItemReceita.valor.replace(/R\$/gi, '').trim();
       this.receitaService.save(this.ItemReceita).subscribe(() => {
-        this.ItemReceita.carteira = carteiradescr;
+        this.ItemReceita.carteiradescr = carteiradescr;
         this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
         this.ItemReceita.datareceb = this.ItemReceita.datareceb.substr(0, 2);
         event.confirm.resolve(this.ItemReceita);
@@ -240,7 +240,7 @@ export class ReceitaComponent implements OnInit{
     this.source.setFilter([
       // fields we want to include in the search
       {
-        field: 'carteira',
+        field: 'carteiraid',
         search: query,
       },
       {

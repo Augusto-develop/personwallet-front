@@ -18,16 +18,26 @@ export class ControleComponent implements OnInit {
   public titleReceita = 'Receitas';
   public titleDespesa = 'Despesas';
 
-  constructor(private http: HttpClient) {
-    this.apiURL = 'http://localhost:8081';
+  public mesref: string = '07';
+  public anoref: string = '2021';
+  public onsearch: boolean = false;
 
-    this.http.get<SaldoGeral>(`http://localhost:8081/saldos/list`)
-      .subscribe((resultado) => {
-          this.dadosSaldo = resultado;
-      });
+  constructor(private http: HttpClient) {
+      this.apiURL = 'http://localhost:8081';
+      this.onPesquisaSaldos();
   }
 
   ngOnInit() {
+
   }
 
+  onPesquisaSaldos() {
+   this.onsearch = true;
+   this.http.get<SaldoGeral>(
+      `http://localhost:8081/saldos/list` + '/' + this.anoref + '/' + this.mesref)
+   .subscribe((resultado) => {
+       this.dadosSaldo = resultado;
+       this.onsearch = false;
+   });
+  }
 }

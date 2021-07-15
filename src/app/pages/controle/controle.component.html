@@ -1,4 +1,37 @@
 
+  <nb-card>
+   <nb-card-header>Controle</nb-card-header>
+   <nb-card-body>
+     <div class="row">
+       <div class="col-lg-auto">
+         <nb-select matRipple style="width: 200px;" [(ngModel)]="mesref">
+           <nb-option matRipple value="01">Janeiro</nb-option>
+           <nb-option matRipple value="02">Fevereiro</nb-option>
+           <nb-option matRipple value="03">Março</nb-option>
+           <nb-option matRipple value="04">Abril</nb-option>
+           <nb-option matRipple value="05">Maio</nb-option>
+           <nb-option matRipple value="06">Junho</nb-option>
+           <nb-option matRipple value="07">Julho</nb-option>
+           <nb-option matRipple value="08">Agosto</nb-option>
+           <nb-option matRipple value="09">Setembro</nb-option>
+           <nb-option matRipple value="10">Outubro</nb-option>
+           <nb-option matRipple value="11">Novembro</nb-option>
+           <nb-option matRipple value="12">Dezembro</nb-option>
+         </nb-select>
+       </div>
+       <div class="col-lg-1">
+         <input type="text" nbInput fullWidth placeholder="Ano" maxlength="4" class="p-2" [(ngModel)]="anoref">
+       </div>
+       <nb-actions size="medium" fullWidth>
+         <nb-action matRipple style="cursor: pointer;" (click)="onPesquisaSaldos()">
+           <nb-icon class="action-icon" icon="search-outline"></nb-icon>
+           <span>Pesquisar</span>
+
+         </nb-action>
+       </nb-actions>
+     </div>
+   </nb-card-body>
+ </nb-card>
   <div class="row" >
     <div class="col-md-4">
       <ngx-saldogeral [icon]="iconSaldo" [titulo]="titleSaldo" [total]="dadosSaldo.totalCarteiras" [detalhes]="dadosSaldo.carteiras"></ngx-saldogeral>
@@ -12,6 +45,6 @@
   </div>
   <div class="row">
     <div class="col-xl-12 col-md-12">
-        <ngx-listfaturas></ngx-listfaturas>
+        <ngx-listfaturas [anofat]="anoref" [mesfat]="mesref" [onsearch]="onsearch"></ngx-listfaturas>
     </div>
 </div>

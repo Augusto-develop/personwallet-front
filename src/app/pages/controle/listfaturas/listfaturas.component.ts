@@ -1,8 +1,9 @@
 import { Despesa, DespesaService } from './../../../@core/database/despesa.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Fatura, FaturaFechada, FaturaService } from '../../../@core/database/fatura.service';
 import { Conta } from '../conta';
 import { FATURAS } from '../data-faturas';
+import { UtilService } from '../../../@core/utils/util.service';
 
 @Component({
   selector: 'ngx-listfaturas',
@@ -19,19 +20,21 @@ import { FATURAS } from '../data-faturas';
     '../../../../assets/flatable/icon/material-design/css/material-design-iconic-font.min.css',
   ],
 })
-export class ListfaturasComponent {
+export class ListfaturasComponent implements OnChanges, OnInit {
 
-  public faturas = FATURAS;
+   public faturas = FATURAS;
    public contas: Despesa[] | undefined;
    public selectedItem: FaturaFechada | undefined;
    public animal!: string;
    public name!: string;
-    ResultGetExtrato: FaturaFechada[];
-    mesfat = '06';
-    anofat = '2021';
+
+   @Input() public mesfat: string | undefined;
+   @Input() public anofat: string | undefined;
+   @Input() public onsearch: boolean;
+   ResultGetExtrato: FaturaFechada[];
 
    constructor(private faturaService: FaturaService, private despesaService: DespesaService) {
-    this.onPesquisaFaturas();
+
    }
 
   public onSelect(faturaFechada: FaturaFechada): void {
@@ -44,11 +47,36 @@ export class ListfaturasComponent {
 
   onPesquisaFaturas() {
     this.faturaService.getExtrato(this.mesfat, this.anofat).subscribe((resultado: FaturaFechada[]) => {
-      this.ResultGetExtrato = resultado;
-      /*const listExtrato = [];
-      Array.from(this.ResultGetExtrato).forEach(element => {
-        listExtrato.push(element);
-      });*/
+      const listfaturas = [];
+      Array.from(resultado).forEach(element => {
+         const valorpago = UtilService.converteMoedaFloat(element.pago);
+         const valorfatura = UtilService.converteMoedaFloat(element.valor);
+
+         if (valorfatura === 0) {
+            element.status = 'PG';
+         } else
+         if (valorpago === 0) {
+            element.status = 'AB';
+         } else
+         if (valorpago < valorfatura) {
+            element.status = 'PC';
+         } else {
+            element.status = 'PG';
+         }
+
+         listfaturas.push(element);
+       });
+       this.ResultGetExtrato = listfaturas;
     });
   }
+
+   ngOnInit() {
+      this.onPesquisaFaturas();
+   }
+
+   ngOnChanges(changes: SimpleChanges) {
+      if (changes.onsearch.currentValue) {
+         this.onPesquisaFaturas();
+      }
+   }
 }

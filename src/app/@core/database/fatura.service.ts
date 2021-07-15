@@ -19,6 +19,8 @@ export class FaturaFechada {
   anofat: string;
   dia: string;
   valor: string;
+  pago: string;
+  status: string;
 }
 
 @Injectable({
