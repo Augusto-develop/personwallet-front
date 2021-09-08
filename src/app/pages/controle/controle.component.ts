@@ -19,7 +19,7 @@ export class ControleComponent implements OnInit {
   public titleReceita = 'Receitas';
   public titleDespesa = 'Despesas';
 
-  public mesref: string = '07';
+  public mesref: string = '08';
   public anoref: string = '2021';
   public onsearch: boolean = false;
 
