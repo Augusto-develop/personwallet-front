@@ -12,6 +12,7 @@ export class UtilService {
     } else {
       valor = valor.replace('.', '');
       valor = valor.replace(',', '.');
+      valor = valor.replace(' ', '');
     }
     return parseFloat(valor);
   }

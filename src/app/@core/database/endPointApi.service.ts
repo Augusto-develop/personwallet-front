@@ -1,6 +1,6 @@
 
-//const host = 'http://localhost:8081';
-const host = 'https://perssonwallet.herokuapp.com';
+const host = 'http://localhost:8081';
+//const host = 'https://perssonwallet.herokuapp.com';
 
 export const EndPointApi = {
    faturas: host + '/faturas',
