@@ -63,7 +63,7 @@ export class ReceitaComponent implements OnInit{
           component: CustomInputEditorComponent,
         },
       },
-      carteiraid: {
+      carteira: {
         title: 'Carteira',
         type: 'html',
         filter: false,
@@ -95,8 +95,8 @@ export class ReceitaComponent implements OnInit{
 
   source: LocalDataSource = new LocalDataSource();
   totalReceitas = '0,00';
-  mesref: string = '07';
-  anoref: string = '2021';
+  anoref = '0';
+  mesref = '0';
 
   constructor(private service: SmartTableData, private http: HttpClient,
     private receitaService: ReceitaService, private carteiraService: CarteiraService) {
@@ -111,12 +111,15 @@ export class ReceitaComponent implements OnInit{
           });
         });
         const mySettings = this.settings;
-        mySettings.columns.carteiraid.editor.config.list = listCarteiras;
+        mySettings.columns.carteira.editor.config.list = listCarteiras;
         this.settings = Object.assign ({}, mySettings);
       });
   }
 
   ngOnInit() {
+     const currentTime = new Date();
+     this.anoref = currentTime.getFullYear().toString();
+     this.mesref = UtilService.zeroesq((currentTime.getMonth() + 1).toString(), 2);
   }
 
   onPesquisaReceitas() {
@@ -125,7 +128,7 @@ export class ReceitaComponent implements OnInit{
       const listReceitas = [];
       let calcTotalReceitas = 0;
       Array.from(this.ResultGetReceitas).forEach(element => {
-        element.carteiraid = element.carteiraid + ' - ' + element.carteiradescr;
+        element.carteira = element.carteira + ' - ' + element.carteiradescr;
         element.fixa = element.fixa ? 'Sim' : 'Não';
         element.datareceb = element.datareceb.substr(0, 2);
         listReceitas.push(element);
@@ -179,8 +182,8 @@ export class ReceitaComponent implements OnInit{
       this.ItemReceita = event.newData;
       const carteiradescr = this.ItemReceita.carteiradescr;
 
-      const splitCarteiras = this.ItemReceita.carteiraid.split('-');
-      this.ItemReceita.carteiraid = splitCarteiras[0].trim();
+      const splitCarteiras = this.ItemReceita.carteira.split('-');
+      this.ItemReceita.carteira = splitCarteiras[0].trim();
 
       this.ItemReceita.fixa = this.ItemReceita.fixa === 'Sim' ? 'true' : 'false';
 
@@ -207,10 +210,11 @@ export class ReceitaComponent implements OnInit{
   onEditConfirm(event): void {
     if (window.confirm('Deseja alterar este item?')) {
       this.ItemReceita = event.newData;
-      const carteiradescr = this.ItemReceita.carteiraid;
 
-      const splitCarteiras = this.ItemReceita.carteiraid.split('-');
-      this.ItemReceita.carteiraid = splitCarteiras[0].trim();
+      const carteiradescr = this.ItemReceita.carteira;
+
+      const splitCarteiras = this.ItemReceita.carteira.split('-');
+      this.ItemReceita.carteira = splitCarteiras[0].trim();
 
       this.ItemReceita.fixa = this.ItemReceita.fixa === 'Sim' ? 'true' : 'false';
       this.ItemReceita.descricao = this.ItemReceita.descricao.trim();
@@ -224,8 +228,9 @@ export class ReceitaComponent implements OnInit{
         '/' + this.mesref + '/' + this.anoref;
 
       this.ItemReceita.valor = this.ItemReceita.valor.replace(/R\$/gi, '').trim();
-      this.receitaService.save(this.ItemReceita).subscribe(() => {
-        this.ItemReceita.carteiradescr = carteiradescr;
+
+      this.receitaService.update(this.ItemReceita.id, this.ItemReceita).subscribe(() => {
+        this.ItemReceita.carteira = carteiradescr;
         this.ItemReceita.fixa = this.ItemReceita.fixa ? 'Sim' : 'Não';
         this.ItemReceita.datareceb = this.ItemReceita.datareceb.substr(0, 2);
         event.confirm.resolve(this.ItemReceita);
@@ -240,7 +245,7 @@ export class ReceitaComponent implements OnInit{
     this.source.setFilter([
       // fields we want to include in the search
       {
-        field: 'carteiraid',
+        field: 'carteira',
         search: query,
       },
       {

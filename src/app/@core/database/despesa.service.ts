@@ -9,12 +9,11 @@ import { EndPointApi } from './endPointApi.service';
 
 export class Despesa {
   id: string;
-  faturaid: string;
-  faturadescr: string;
+  fatura: string;
   anofat: string;
   mesfat: string;
   descricao: string;
-  categoriaid: string;
+  categoria: string;
   categoriadescr: string;
   numparc: string;
   qtdeparc: string;
@@ -84,7 +83,7 @@ export class DespesaService {
   }*/
 
   update(id, data): Observable<Despesa> {
-    return this.httpClient.put<Despesa>(this.endPoint + '/alter/' + id, JSON.stringify(data), this.httpOptions)
+    return this.httpClient.put<Despesa>(this.endPoint + '/' + id, JSON.stringify(data), this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),

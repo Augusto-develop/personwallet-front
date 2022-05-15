@@ -43,7 +43,7 @@ import {
   bootstrap: [AppComponent],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
-  ]
+  ],
 })
 export class AppModule {
 }

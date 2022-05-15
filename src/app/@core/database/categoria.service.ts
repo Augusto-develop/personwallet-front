@@ -35,7 +35,7 @@ export class CategoriaService {
   };*/
 
   getCategorias(): Observable<Categoria[]> {
-    return this.httpClient.get<Categoria[]>(this.endPoint + '/list')
+    return this.httpClient.get<Categoria[]>(this.endPoint /*+ '/list'*/)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -60,11 +60,8 @@ export class CategoriaService {
   }
 
   save(employee): Observable<Categoria> {
-    return this.httpClient.post<Categoria>(this.endPoint + '/add', employee, this.httpOptions)
-      .pipe(
-        retry(1),
-        catchError(this.httpError)
-      );
+    return this.httpClient.post<Categoria>(this.endPoint /*+ '/add'*/, employee, this.httpOptions)
+      .pipe(retry(1), catchError(this.httpError));
   }
 
   /*save(employee) {
@@ -72,8 +69,9 @@ export class CategoriaService {
     .subscribe(() => {}, err => console.error(err));
   }*/
 
+   /*'/alter/*/
   update(id, data): Observable<Categoria> {
-    return this.httpClient.put<Categoria>(this.endPoint + '/alter/' + id, JSON.stringify(data), this.httpOptions)
+    return this.httpClient.put<Categoria>(this.endPoint + '/' + id, JSON.stringify(data), this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -81,7 +79,7 @@ export class CategoriaService {
   }
 
   delete(id) {
-    return this.httpClient.delete<Categoria>(this.endPoint + '/delete/' + id, this.httpOptions)
+    return this.httpClient.delete<Categoria>(this.endPoint + /*'/delete/'*/ '/' + id, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),

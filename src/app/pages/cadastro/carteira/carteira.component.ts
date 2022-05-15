@@ -87,7 +87,7 @@ export class CarteiraComponent {
     if (window.confirm('Deseja alterar este item?')) {
       this.ItemCarteira = event.newData;
       this.ItemCarteira.ativo = true;
-      this.carteiraService.save(this.ItemCarteira)
+      this.carteiraService.update(this.ItemCarteira.id, this.ItemCarteira)
       .subscribe(() => {
         event.confirm.resolve();
       }, err => console.error(err));

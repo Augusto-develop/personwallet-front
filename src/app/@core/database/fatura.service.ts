@@ -19,7 +19,7 @@ export class FaturaFechada {
   descricao: string;
   mesfat: string;
   anofat: string;
-  dia: string;
+  diavenc: string;
   valor: string;
   pago: string;
   status: string;
@@ -51,10 +51,7 @@ export class FaturaService {
 
   getExtrato(mes, ano): Observable<FaturaFechada[]> {
     return this.httpClient.get<FaturaFechada[]>(this.endPoint + '/' + mes + '/' + ano)
-    .pipe(
-      retry(1),
-      catchError(this.httpError),
-    );
+    .pipe(retry(1), catchError(this.httpError));
   }
 
   /*getUser(id): Observable<Fatura> {
@@ -67,26 +64,17 @@ export class FaturaService {
 
   save(employee): Observable<Fatura> {
     return this.httpClient.post<Fatura>(this.endPoint, employee, this.httpOptions)
-      .pipe(
-        retry(1),
-        catchError(this.httpError)
-      );
+      .pipe(retry(1), catchError(this.httpError));
   }
 
   update(id, data): Observable<Fatura> {
     return this.httpClient.put<Fatura>(this.endPoint + '/' + id, JSON.stringify(data), this.httpOptions)
-    .pipe(
-      retry(1),
-      catchError(this.httpError),
-    );
+    .pipe(retry(1), catchError(this.httpError));
   }
 
   delete(id) {
     return this.httpClient.delete<Fatura>(this.endPoint + '/' + id, this.httpOptions)
-    .pipe(
-      retry(1),
-      catchError(this.httpError),
-    );
+    .pipe(retry(1), catchError(this.httpError));
   }
 
   httpError(error) {

@@ -7,7 +7,7 @@ import { EndPointApi } from './endPointApi.service';
 
 export class Receita {
   id: string;
-  carteiraid: string;
+  carteira: string;
   carteiradescr: string;
   descricao: string;
   datareceb: string;

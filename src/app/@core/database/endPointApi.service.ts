@@ -1,12 +1,14 @@
 
 const host = 'http://localhost:8081';
-//const host = 'https://perssonwallet.herokuapp.com';
+const host2 = 'http://personwallet/api/v1';
+/*const host = 'https://perssonwallet.herokuapp.com';*/
 
 export const EndPointApi = {
-   faturas: host + '/faturas',
-   receitas: host + '/receitas',
-   despesas: host + '/despesas',
-   categorias: host + '/categorias',
-   carteiras: host + '/carteiras',
+   faturas: host2 + '/faturas',
+   receitas: host2 + '/receitas',
+   despesas: host2 + '/despesas',
+   categorias: host2 + '/categorias',
+   carteiras: host2 + '/carteiras',
    saldoslist: host + '/saldos/list',
+   carteirassaldo: host2 + '/carteiras/saldo',
 };

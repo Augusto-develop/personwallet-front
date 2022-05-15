@@ -86,7 +86,7 @@ export class CategoriaComponent {
   onEditConfirm(event): void {
     if (window.confirm('Deseja alterar este item?')) {
       this.ItemCategoria = event.newData;
-      this.categoriaService.save(this.ItemCategoria)
+      this.categoriaService.update(this.ItemCategoria.id, this.ItemCategoria)
       .subscribe(() => {
         event.confirm.resolve();
       }, err => console.error(err));

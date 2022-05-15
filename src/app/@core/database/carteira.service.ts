@@ -1,105 +1,105 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
-import { EndPointApi } from './endPointApi.service';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {retry, catchError} from 'rxjs/operators';
+import {EndPointApi} from './endPointApi.service';
 
 export class Carteira {
-  id: string;
-  descricao: string;
-  ativo: boolean;
-  /*email: string;
-  phone: number;*/
+   id: string;
+   descricao: string;
+   ativo: boolean;
+   /*email: string;
+   phone: number;*/
 }
 
 @Injectable({
-  providedIn: 'root',
+   providedIn: 'root',
 })
 
 export class CarteiraService {
-  endPoint = EndPointApi.carteiras;
+   endPoint = EndPointApi.carteiras;
 
-  constructor(private httpClient: HttpClient) { }
+   constructor(private httpClient: HttpClient) {
+   }
 
-  httpOptions = {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-  };
+   httpOptions = {
+      headers: {
+         'Content-Type': 'application/json; charset=utf-8',
+      },
+   };
 
-  public carteiras!: Carteira;
+   public carteiras!: Carteira;
 
-  /*httpHeader = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json; charset=utf-8',
-    }),
-  };*/
+   /*httpHeader = {
+     headers: new HttpHeaders({
+       'Content-Type': 'application/json; charset=utf-8',
+     }),
+   };*/
 
-  getCarteiras(): Observable<Carteira[]> {
-    return this.httpClient.get<Carteira[]>(this.endPoint + '/list')
-    .pipe(
-      retry(1),
-      catchError(this.httpError),
-    );
-  }
+   getCarteiras(): Observable<Carteira[]> {
+      return this.httpClient.get<Carteira[]>(this.endPoint /*+ '/list'*/)
+         .pipe(
+            retry(1),
+            catchError(this.httpError),
+         );
+   }
 
-  /*getCarteiras() {
-    this.httpClient.get<any[]>(this.endPoint + '/list');*/
+   /*getCarteiras() {
+     this.httpClient.get<any[]>(this.endPoint + '/list');*/
 
-    /*.pipe(
-      retry(1),
-      catchError(this.httpError),
-    );*/
-  /*}*/
+   /*.pipe(
+     retry(1),
+     catchError(this.httpError),
+   );*/
 
-  getUser(id): Observable<Carteira> {
-    return this.httpClient.get<Carteira>(this.endPoint + '/get/' + id)
-    .pipe(
-      retry(1),
-      catchError(this.httpError),
-    );
-  }
+   /*}*/
 
-  save(employee): Observable<Carteira> {
-    return this.httpClient.post<Carteira>(this.endPoint + '/add', employee, this.httpOptions)
-      .pipe(
-        retry(1),
-        catchError(this.httpError)
-      );
-  }
+   getUser(id): Observable<Carteira> {
+      return this.httpClient.get<Carteira>(this.endPoint + '/get/' + id)
+         .pipe(
+            retry(1),
+            catchError(this.httpError),
+         );
+   }
 
-  /*save(employee) {
-    this.httpClient.post(this.endPoint + '/add', employee, this.httpOptions)
-    .subscribe(() => {}, err => console.error(err));
-  }*/
+   save(employee): Observable<Carteira> {
+      return this.httpClient.post<Carteira>(this.endPoint /*+ '/add'*/, employee, this.httpOptions)
+         .pipe(retry(1), catchError(this.httpError));
+   }
 
-  update(id, data): Observable<Carteira> {
-    return this.httpClient.put<Carteira>(this.endPoint + '/alter/' + id, JSON.stringify(data), this.httpOptions)
-    .pipe(
-      retry(1),
-      catchError(this.httpError),
-    );
-  }
+   /*save(employee) {
+     this.httpClient.post(this.endPoint + '/add', employee, this.httpOptions)
+     .subscribe(() => {}, err => console.error(err));
+   }*/
 
-  delete(id) {
-    return this.httpClient.delete<Carteira>(this.endPoint + '/delete/' + id, this.httpOptions)
-    .pipe(
-      retry(1),
-      catchError(this.httpError),
-    );
-  }
+   /*'/alter/'*/
+   update(id, data): Observable<Carteira> {
+      return this.httpClient.put<Carteira>(this.endPoint + '/' + id, JSON.stringify(data), this.httpOptions)
+         .pipe(
+            retry(1),
+            catchError(this.httpError),
+         );
+   }
 
-  httpError(error) {
-    let msg = '';
-    if (error.error instanceof ErrorEvent) {
-      // client side error
-      msg = error.error.message;
-    } else {
-      // server side error
-      msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    // tslint:disable-next-line: no-console
-    console.log(msg);
-    return throwError(msg);
-  }
+   delete(id) {
+      return this.httpClient.delete<Carteira>(this.endPoint + /*'/delete/'*/ '/' + id, this.httpOptions)
+         .pipe(
+            retry(1),
+            catchError(this.httpError),
+         );
+   }
+
+   httpError(error) {
+      let msg = '';
+      if (error.error instanceof ErrorEvent) {
+         // client side error
+         msg = error.error.message;
+      } else {
+         // server side error
+         msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      }
+      // tslint:disable-next-line: no-console
+      console.log(msg);
+      return throwError(msg);
+   }
 }
