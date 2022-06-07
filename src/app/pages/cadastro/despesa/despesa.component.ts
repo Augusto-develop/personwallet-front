@@ -1,5 +1,5 @@
-import {Categoria, CategoriaService} from './../../../@core/database/categoria.service';
-import {Fatura, FaturaService} from './../../../@core/database/fatura.service';
+import {Categoria, CategoriaService} from '../../../@core/database/categoria.service';
+import {Fatura, FaturaService} from '../../../@core/database/fatura.service';
 import {HttpClient} from '@angular/common/http';
 import {DefaultEditor, LocalDataSource} from 'ng2-smart-table';
 import {SmartTableData} from '../../../@core/data/smart-table';
@@ -7,6 +7,9 @@ import {Despesa, DespesaService} from '../../../@core/database/despesa.service';
 import {Component, OnInit} from '@angular/core';
 import {UtilService} from '../../../@core/utils/util.service';
 import {CustomInputEditorComponent} from '../receita/receita.component';
+import {DialogCartPgComponent} from './dialog-cart-pg/dialog-cart-pg.component';
+import {NbDialogService} from '@nebular/theme';
+import {DialogParcelaAllComponent} from './dialog-parcela-all/dialog-parcela-all.component';
 
 @Component({
    selector: 'ngx-despesa',
@@ -19,6 +22,7 @@ export class DespesaComponent implements OnInit {
    ResultGetDespesas: Despesa[];
    ItemDespesa: Despesa;
 
+   names: string[] = [];
 
    settings = {
       actions: {
@@ -111,8 +115,7 @@ export class DespesaComponent implements OnInit {
 
    constructor(private service: SmartTableData, private http: HttpClient,
                private despesaService: DespesaService, private faturaService: FaturaService,
-               private categoriaService: CategoriaService) {
-      this.onPesquisaDespesas();
+               private categoriaService: CategoriaService, private dialogService: NbDialogService) {
 
       faturaService.getFaturas().subscribe((resultado: Fatura[]) => {
          this.faturasSelect = resultado;
@@ -196,7 +199,32 @@ export class DespesaComponent implements OnInit {
    }
 
    onCreateConfirm(event): void {
-      if (window.confirm('Deseja Salvar este item?')) {
+
+      const self = this;
+
+      const dados = event.newData;
+
+      if (self.faturaoption === '9') {
+         this.dialogService.open(DialogCartPgComponent)
+            .onClose.subscribe(carteira => carteira && self.createExec(event, carteira));
+      } else if (dados.qtdeparc > 1) {
+         this.dialogService.open(DialogParcelaAllComponent)
+            .onClose.subscribe(lancparc => lancparc && self.createExec(event, '', lancparc));
+      } else {
+         if (window.confirm('Deseja Salvar este item?')) {
+            self.createExec(event);
+         } else {
+            event.confirm.reject();
+         }
+      }
+   }
+
+   createExec(event, carteira = '', lancparc = ''): void {
+
+      if (carteira === 'CANCEL' || lancparc === 'CANCEL') {
+         event.confirm.reject();
+      } else {
+
          this.ItemDespesa = event.newData;
 
          this.ItemDespesa.fatura = this.faturaoption;
@@ -210,10 +238,14 @@ export class DespesaComponent implements OnInit {
 
          this.ItemDespesa.fixa = this.ItemDespesa.fixa === 'Sim' ? 'T' : 'F';
 
+         this.ItemDespesa.carteirapg = carteira;
+
          this.ItemDespesa.valor = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'})
             .format(parseFloat(this.ItemDespesa.valor));
 
          this.ItemDespesa.valor = this.ItemDespesa.valor.replace(/R\$/gi, '').trim();
+
+         this.ItemDespesa.saveparc = lancparc;
 
          this.despesaService.save(this.ItemDespesa).subscribe((result: Despesa) => {
             this.ItemDespesa.id = result.id;
@@ -222,8 +254,6 @@ export class DespesaComponent implements OnInit {
             event.confirm.resolve(this.ItemDespesa);
             this.onUpdateTotalDespesa(this.ItemDespesa, 'INSERT');
          }, err => console.error(err));
-      } else {
-         event.confirm.reject();
       }
    }
 
@@ -297,6 +327,12 @@ export class DespesaComponent implements OnInit {
          },
       ], true);
    }
+
+   open3() {
+      this.dialogService.open(DialogCartPgComponent)
+         .onClose.subscribe(name => name && this.names.push(name));
+   }
+
 
    /*columns: {
      column {

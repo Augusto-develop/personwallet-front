@@ -1,8 +1,7 @@
-import { Despesa, DespesaService } from './../../../@core/database/despesa.service';
+import { Despesa, DespesaService } from '../../../@core/database/despesa.service';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Fatura, FaturaFechada, FaturaService } from '../../../@core/database/fatura.service';
-import { Conta } from '../conta';
-import { FATURAS } from '../data-faturas';
+
 import { UtilService } from '../../../@core/utils/util.service';
 
 @Component({
@@ -22,7 +21,6 @@ import { UtilService } from '../../../@core/utils/util.service';
 })
 export class ListfaturasComponent implements OnChanges, OnInit {
 
-   public faturas = FATURAS;
    public contas: Despesa[] | undefined;
    public selectedItem: FaturaFechada | undefined;
    public animal!: string;

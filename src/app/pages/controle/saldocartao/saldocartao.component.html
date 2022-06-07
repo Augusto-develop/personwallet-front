@@ -1,0 +1,49 @@
+<nb-card>
+   <nb-card-header class="p-2">
+      <label class="p-2 m-0">{{descricaoCartao}}</label>
+      <div class="card-header-info mt-1">
+         <i *ngIf="isMidway" class="iconpw iconpw-midway-min"></i>
+         <i *ngIf="isNubank" class="iconpw iconpw-nubank"></i>
+         <i *ngIf="isC6bank" class="iconpw iconpw-c6bank"></i>
+         <i *ngIf="isCaixa" class="iconpw iconpw-banco-caixa-min">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+         </i>
+         <i *ngIf="isItau" class="iconpw iconpw-itau-min">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+         </i>
+         <i *ngIf="isSantander" class="iconpw iconpw-santander-min">
+            <span class="path1"></span>
+            <span class="path2"></span>
+         </i>
+         <i class="iconpw iconpw-pipe px-2"></i>
+         <i *ngIf="isRchlo" class="iconpw iconpw-rchlo-min"></i>
+         <i *ngIf="isPipeSecond" class="iconpw iconpw-pipe px-2"></i>
+         <i *ngIf="isMastercard" class="iconpw iconpw-mastercard">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+            <span class="path4"></span>
+         </i>
+         <i *ngIf="isVisa" class="iconpw iconpw-visa">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+            <span class="path4"></span>
+         </i>
+      </div>
+   </nb-card-header>
+   <nb-card-body class="px-0">
+      <ngx-charts-advanced-pie-chart
+         [scheme]="colorScheme"
+         [animations]="false"
+         [gradient]="true"
+         [label]="labeltotal"
+         [valueFormatting]="formatvalue"
+         [results]="single">
+      </ngx-charts-advanced-pie-chart>
+   </nb-card-body>
+</nb-card>

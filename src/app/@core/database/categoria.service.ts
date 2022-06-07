@@ -3,12 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { EndPointApi } from './endPointApi.service';
+import {NbAuthService, NbAuthToken} from '@nebular/auth';
 
 export class Categoria {
   id: string;
   descricao: string;
-  /*email: string;
-  phone: number;*/
 }
 
 @Injectable({
@@ -17,14 +16,21 @@ export class Categoria {
 
 export class CategoriaService {
   endPoint = EndPointApi.categorias;
+   httpOptions = {
+      headers: {
+         'Content-Type': 'application/json; charset=utf-8',
+         'Authorization': '',
+      },
+   };
 
-  constructor(private httpClient: HttpClient) { }
-
-  httpOptions = {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-  };
+   constructor(private httpClient: HttpClient, private authService: NbAuthService) {
+      this.authService.getToken()
+         .subscribe((token: NbAuthToken) => {
+            if (token.isValid()) {
+               this.httpOptions.headers.Authorization = 'Bearer ' + token;
+            }
+         });
+   }
 
   public categorias!: Categoria;
 
@@ -35,7 +41,7 @@ export class CategoriaService {
   };*/
 
   getCategorias(): Observable<Categoria[]> {
-    return this.httpClient.get<Categoria[]>(this.endPoint /*+ '/list'*/)
+    return this.httpClient.get<Categoria[]>(this.endPoint /*+ '/list'*/, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -52,7 +58,7 @@ export class CategoriaService {
   /*}*/
 
   getUser(id): Observable<Categoria> {
-    return this.httpClient.get<Categoria>(this.endPoint + '/get/' + id)
+    return this.httpClient.get<Categoria>(this.endPoint + '/get/' + id, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),

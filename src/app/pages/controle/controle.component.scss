@@ -1,23 +1,138 @@
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+   ngx-saldocartao.card-santander-sx{
+      background-size: cover !important;
+      background: url('../../../assets/icons/background/SVG/santander-sx-color.svg') no-repeat;
+
+
+      ::ng-deep {
+         nb-card, nb-card-header, nb-card-body{
+            background: none !important;
+         }
+      }
+   }
+
+   ngx-saldocartao.card-nubank-roxinho{
+      background-size: cover !important;
+      /*background: url('../../../assets/icons/background/SVG/nubank-color.svg') no-repeat;*/
+      background-color: rgb(130, 10, 209);
+
+      ::ng-deep {
+         nb-card, nb-card-header, nb-card-body{
+            background: none !important;
+         }
+      }
+   }
+
+   ngx-saldocartao.card-midway-rchilo{
+      background-size: cover !important;
+      background-color: rgb(0, 100, 100);
+
+      ::ng-deep {
+         nb-card, nb-card-header, nb-card-body{
+            background: none !important;
+         }
+      }
+   }
+
+   ngx-saldocartao.card-caixa{
+      background-size: cover !important;
+      background-color: #006bae;
+
+      ::ng-deep {
+         nb-card, nb-card-header, nb-card-body{
+            background: none !important;
+         }
+      }
+   }
+
+   ngx-saldocartao.card-itau{
+      background-size: cover !important;
+      background-color: #EC7000;
+
+      ::ng-deep {
+         nb-card, nb-card-header, nb-card-body{
+            background: none !important;
+         }
+      }
+   }
+
+   ngx-saldocartao.card-c6-boreal-forest{
+      background-size: cover !important;
+      background: rgba(0, 0, 0, 0) linear-gradient(247.94deg, rgb(184, 174, 162) 3.61%,
+         rgb(146, 143, 134) 48.2%, rgb(94, 105, 101) 100%) repeat scroll 0% 0%;
+
+      ::ng-deep {
+         nb-card, nb-card-header, nb-card-body{
+            background: none !important;
+         }
+      }
+   }
+
+   ngx-saldocartao {
+      display: block;
+      width: 100%;
+      height: auto;
+
+      ::ng-deep {
+         .pie-label {
+            fill: nb-theme(text-basic-color);
+         }
+
+         text {
+            fill: nb-theme(text-hint-color);
+         }
+
+         .chart-legend {
+            .legend-labels {
+               background: nb-theme(background-basic-color-2);
+            }
+
+            .legend-label {
+               color: nb-theme(text-hint-color);
+
+               .active .legend-label-text {
+                  color: nb-theme(text-basic-color);
+               }
+            }
+         }
+
+         .total-value,
+         .item-value,
+         .item-percent {
+            line-height: 1.25;
+         }
+
+         .legend-items {
+            overflow-y: hidden;
+         }
+      }
+   }
+}
+
+
 .cdk-drop-list-dragging .cdk-drag {
 
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 
-  }
+}
 
-  .cdk-drag-animating {
+.cdk-drag-animating {
 
-  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+   transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 
-  }
+}
 
-  .img-person {
+.img-person {
 
-  border-radius: 35%;
+   border-radius: 35%;
 
-  width: 80px;
+   width: 80px;
 
-  }
+}
 
-  .dark-layout .card{
-      border-top-color: #e91d63 !important;
-   }
+.dark-layout .card {
+   border-top-color: #e91d63 !important;
+}

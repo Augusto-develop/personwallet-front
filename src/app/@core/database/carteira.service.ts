@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {retry, catchError} from 'rxjs/operators';
 import {EndPointApi} from './endPointApi.service';
+import {NbAuthJWTToken, NbAuthService, NbAuthToken} from "@nebular/auth";
 
 export class Carteira {
    id: string;
@@ -18,26 +19,27 @@ export class Carteira {
 
 export class CarteiraService {
    endPoint = EndPointApi.carteiras;
-
-   constructor(private httpClient: HttpClient) {
-   }
-
    httpOptions = {
       headers: {
          'Content-Type': 'application/json; charset=utf-8',
+         'Authorization': '',
       },
    };
 
+   constructor(private httpClient: HttpClient, private authService: NbAuthService) {
+      this.authService.getToken()
+         .subscribe((token: NbAuthToken) => {
+            if (token.isValid()) {
+               this.httpOptions.headers.Authorization = 'Bearer ' + token;
+            }
+         });
+   }
+
    public carteiras!: Carteira;
 
-   /*httpHeader = {
-     headers: new HttpHeaders({
-       'Content-Type': 'application/json; charset=utf-8',
-     }),
-   };*/
 
    getCarteiras(): Observable<Carteira[]> {
-      return this.httpClient.get<Carteira[]>(this.endPoint /*+ '/list'*/)
+      return this.httpClient.get<Carteira[]>(this.endPoint /*+ '/list'*/, this.httpOptions)
          .pipe(
             retry(1),
             catchError(this.httpError),
@@ -54,8 +56,8 @@ export class CarteiraService {
 
    /*}*/
 
-   getUser(id): Observable<Carteira> {
-      return this.httpClient.get<Carteira>(this.endPoint + '/get/' + id)
+   getCarteira(id): Observable<Carteira> {
+      return this.httpClient.get<Carteira>(this.endPoint + '/get/' + id, this.httpOptions)
          .pipe(
             retry(1),
             catchError(this.httpError),

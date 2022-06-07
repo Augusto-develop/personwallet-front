@@ -1,0 +1,13 @@
+<nb-card>
+  <nb-card-header>Selecione a carteira de débito</nb-card-header>
+  <nb-card-body>
+    <!--<input #carteira nbInput placeholder="Name">-->
+     <nb-select matRipple style="width: 350px;" #carteira>
+        <nb-option matRipple *ngFor="let itemcart of carteirasSelect" value="{{itemcart.id}}">{{itemcart.descricao}}</nb-option>
+     </nb-select>
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="cancel" nbButton matRipple status="danger" (click)="cancel()">Cancelar</button>
+    <button nbButton matRipple status="success" (click)="submit(carteira.selected)">Salvar</button>
+  </nb-card-footer>
+</nb-card>

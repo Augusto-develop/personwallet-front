@@ -1,0 +1,79 @@
+<nb-card>
+   <nb-card-header>Movimento</nb-card-header>
+   <nb-card-body>
+      <div class="dark-layout pag-layout">
+         <!--<div class="row" cdkDropListGroup>
+            <div class="col-xl-3 col-md-6"  *ngFor="let diapg of diasPagamento">
+               <div class="card">
+                  <div class="card-header">
+                     <h5>{{diapg.datareceb}}</h5>
+                  </div>
+                  <div class="card-block p-0">
+                     <div class="pag-container">
+                        <div cdkDropList [cdkDropListData]="diapg.listfat"
+                           class="pag-list"
+                           cdkDropListSortingDisabled
+                           (cdkDropListDropped)="drop($event)">
+                           <div class="pag-box" *ngFor="let item of diapg.listfat" cdkDrag>{{item.fat}}</div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="card-footer">
+                     Total
+                  </div>
+               </div>
+            </div>
+         </div>-->
+         <div class="row">
+            <div class="col-md-12">
+               <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+                  <div class="row">
+                     <div class="col-md-2">
+                        <mat-form-field class="input-example">
+                           <mat-label>Carteira de Debito</mat-label>
+                           <mat-select class="pb-2" formControlName="cartdebito">
+                              <mat-option matRipple *ngFor="let itemcart of carteirasSelect"
+                                          value="{{itemcart.id}}">{{itemcart.descricao}}</mat-option>
+                           </mat-select>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-md-2">
+                        <mat-form-field class="input-example">
+                           <mat-label>Carteira de Credito</mat-label>
+                           <mat-select class="pb-2" formControlName="cartcredito">
+                              <mat-option matRipple *ngFor="let itemcart of carteirasSelect"
+                                          value="{{itemcart.id}}">{{itemcart.descricao}}</mat-option>
+                           </mat-select>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-md-2">
+                        <mat-form-field class="input-example">
+                           <mat-label>Ocorrencia</mat-label>
+                           <input matInput autocomplete="off" formControlName="ocorrencia"
+                                  [matDatepicker]="picker" class="pb-2">
+                           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                           <mat-datepicker #picker></mat-datepicker>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-md-2">
+                        <mat-form-field class="input-example">
+                           <mat-label>Valor</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="valor">
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-md-2">
+                        <button type="submit" nbButton status="primary">Transferir</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </nb-card-body>
+</nb-card>

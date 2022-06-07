@@ -6,6 +6,7 @@ import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Fatura } from './fatura.service';
 import { EndPointApi } from './endPointApi.service';
+import {NbAuthService, NbAuthToken} from '@nebular/auth';
 
 export class Despesa {
   id: string;
@@ -20,6 +21,8 @@ export class Despesa {
   vencimento: string;
   valor: string;
   fixa: string;
+  carteirapg: string;
+  saveparc: string;
 }
 
 @Injectable({
@@ -28,13 +31,21 @@ export class Despesa {
 export class DespesaService {
   endPoint = EndPointApi.despesas;
 
-  constructor(private httpClient: HttpClient) { }
+   httpOptions = {
+      headers: {
+         'Content-Type': 'application/json; charset=utf-8',
+         'Authorization': '',
+      },
+   };
 
-  httpOptions = {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-  };
+   constructor(private httpClient: HttpClient, private authService: NbAuthService) {
+      this.authService.getToken()
+         .subscribe((token: NbAuthToken) => {
+            if (token.isValid()) {
+               this.httpOptions.headers.Authorization = 'Bearer ' + token;
+            }
+         });
+   }
 
   public despesas!: Despesa;
 
@@ -45,7 +56,7 @@ export class DespesaService {
   };*/
 
   getDespesas(fatura, mesref, anoref): Observable<Despesa[]> {
-    return this.httpClient.get<Despesa[]>(this.endPoint + '/' + fatura + '/' + mesref + '/' + anoref)
+    return this.httpClient.get<Despesa[]>(this.endPoint + '/' + fatura + '/' + mesref + '/' + anoref, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -62,7 +73,7 @@ export class DespesaService {
   /*}*/
 
   getUser(id): Observable<Despesa> {
-    return this.httpClient.get<Despesa>(this.endPoint + '/' + id)
+    return this.httpClient.get<Despesa>(this.endPoint + '/' + id, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.httpError),
@@ -73,8 +84,7 @@ export class DespesaService {
     return this.httpClient.post<Despesa>(this.endPoint, employee, this.httpOptions)
       .pipe(
         retry(1),
-        catchError(this.httpError)
-      );
+        catchError(this.httpError));
   }
 
   /*save(employee) {

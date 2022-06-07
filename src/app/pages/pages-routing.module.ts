@@ -20,7 +20,7 @@ const routes: Routes = [{
       loadChildren: () => import('./cadastro/cadastro.module')
         .then(m => m.CadastroModule),
     },
-    /*{
+    {
       path: 'dashboard',
       component: ECommerceComponent,
     },
@@ -68,16 +68,16 @@ const routes: Routes = [{
       loadChildren: () => import('./editors/editors.module')
         .then(m => m.EditorsModule),
     },
-    */{
+    {
       path: 'tables',
       loadChildren: () => import('./tables/tables.module')
         .then(m => m.TablesModule),
     },
-    /*{
+    {
       path: 'miscellaneous',
       loadChildren: () => import('./miscellaneous/miscellaneous.module')
         .then(m => m.MiscellaneousModule),
-    },*/
+    },
     {
       path: '',
       redirectTo: 'controle',
