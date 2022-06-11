@@ -9,8 +9,7 @@ import {UtilService} from '../../../@core/utils/util.service';
 import {FormControl} from '@angular/forms';
 import {Carteira, CarteiraService} from '../../../@core/database/carteira.service';
 import { FormBuilder } from '@angular/forms';
-import {Despesa, DespesaService} from "../../../@core/database/despesa.service";
-import {Pagamento, PagamentoService} from "../../../@core/database/pagamento.service";
+import {Pagamento, PagamentoService} from '../../../@core/database/pagamento.service';
 
 @Component({
    selector: 'ngx-pagamento',
@@ -57,20 +56,7 @@ export class PagamentoComponent implements OnInit {
          this.carteirasSelect = resultado;
       });
 
-      this.mesesSelect = [
-         { id: '01', descr: 'Janeiro' },
-         { id: '02', descr: 'Fevereiro'  },
-         { id: '03', descr: 'Março'  },
-         { id: '04', descr: 'Abril'  },
-         { id: '05', descr: 'Maio'  },
-         { id: '06', descr: 'Junho'  },
-         { id: '07', descr: 'Julho'  },
-         { id: '08', descr: 'Agosto'  },
-         { id: '09', descr: 'Setembro'  },
-         { id: '10', descr: 'Outubro'  },
-         { id: '11', descr: 'Novembro'  },
-         { id: '12', descr: 'Dezembro'  },
-      ];
+      this.mesesSelect = UtilService.getMesesSelect();
    }
 
    public materialTheme$: Observable<boolean>;

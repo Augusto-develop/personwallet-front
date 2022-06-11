@@ -35,7 +35,7 @@ export class UtilService {
       if (qtd < tamanho) {
          const limite = tamanho - qtd;
          for (let i = 0; i < limite; i++) {
-            valor =  valor + '0';
+            valor = valor + '0';
          }
       }
       return valor;
@@ -45,5 +45,22 @@ export class UtilService {
       const parts = n.toString().split('.');
       return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (parts[1] ?
          ',' + this.zerodir(parts[1], 2) : ',00');
+   }
+
+   static getMesesSelect() {
+      return [
+         {id: '01', descr: 'Janeiro'},
+         {id: '02', descr: 'Fevereiro'},
+         {id: '03', descr: 'Março'},
+         {id: '04', descr: 'Abril'},
+         {id: '05', descr: 'Maio'},
+         {id: '06', descr: 'Junho'},
+         {id: '07', descr: 'Julho'},
+         {id: '08', descr: 'Agosto'},
+         {id: '09', descr: 'Setembro'},
+         {id: '10', descr: 'Outubro'},
+         {id: '11', descr: 'Novembro'},
+         {id: '12', descr: 'Dezembro'},
+      ];
    }
 }

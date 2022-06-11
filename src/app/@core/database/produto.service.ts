@@ -1,24 +1,23 @@
+import {Carteira} from './carteira.service';
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {retry, catchError} from 'rxjs/operators';
 import {EndPointApi} from './endPointApi.service';
-import {NbAuthJWTToken, NbAuthService, NbAuthToken} from '@nebular/auth';
+import {NbAuthService, NbAuthToken} from '@nebular/auth';
 
-export class Carteira {
+export class Produto {
    id: string;
    descricao: string;
-   ativo: boolean;
-   /*email: string;
-   phone: number;*/
+   subcategoria: string;
+   subcategoriadescr: string;
 }
 
 @Injectable({
    providedIn: 'root',
 })
-
-export class CarteiraService {
-   endPoint = EndPointApi.carteiras;
+export class ProdutoService {
+   endPoint = EndPointApi.produtos;
    httpOptions = {
       headers: {
          'Content-Type': 'application/json; charset=utf-8',
@@ -35,48 +34,34 @@ export class CarteiraService {
          });
    }
 
-   public carteiras!: Carteira;
+   public produtos!: Produto;
 
-
-   getCarteiras(): Observable<Carteira[]> {
-      return this.httpClient.get<Carteira[]>(this.endPoint /*+ '/list'*/, this.httpOptions)
+   getProdutos(): Observable<Produto[]> {
+      return this.httpClient.get<Produto[]>(this.endPoint, this.httpOptions)
          .pipe(
             retry(1),
             catchError(this.httpError),
          );
    }
 
-   /*getCarteiras() {
-     this.httpClient.get<any[]>(this.endPoint + '/list');*/
-
-   /*.pipe(
-     retry(1),
-     catchError(this.httpError),
-   );*/
-
-   /*}*/
-
-   getCarteira(id): Observable<Carteira> {
-      return this.httpClient.get<Carteira>(this.endPoint + '/get/' + id, this.httpOptions)
+   getUser(id): Observable<Produto> {
+      return this.httpClient.get<Produto>(this.endPoint + '/' + id, this.httpOptions)
          .pipe(
             retry(1),
             catchError(this.httpError),
          );
    }
 
-   save(employee): Observable<Carteira> {
-      return this.httpClient.post<Carteira>(this.endPoint /*+ '/add'*/, employee, this.httpOptions)
-         .pipe(retry(1), catchError(this.httpError));
+   save(employee): Observable<Produto> {
+      return this.httpClient.post<Produto>(this.endPoint, employee, this.httpOptions)
+         .pipe(
+            retry(1),
+            catchError(this.httpError),
+         );
    }
 
-   /*save(employee) {
-     this.httpClient.post(this.endPoint + '/add', employee, this.httpOptions)
-     .subscribe(() => {}, err => console.error(err));
-   }*/
-
-   /*'/alter/'*/
-   update(id, data): Observable<Carteira> {
-      return this.httpClient.put<Carteira>(this.endPoint + '/' + id, JSON.stringify(data), this.httpOptions)
+   update(id, data): Observable<Produto> {
+      return this.httpClient.put<Produto>(this.endPoint + '/' + id, JSON.stringify(data), this.httpOptions)
          .pipe(
             retry(1),
             catchError(this.httpError),
@@ -84,7 +69,7 @@ export class CarteiraService {
    }
 
    delete(id) {
-      return this.httpClient.delete<Carteira>(this.endPoint + /*'/delete/'*/ '/' + id, this.httpOptions)
+      return this.httpClient.delete<Produto>(this.endPoint + '/' + id, this.httpOptions)
          .pipe(
             retry(1),
             catchError(this.httpError),
@@ -104,4 +89,5 @@ export class CarteiraService {
       console.log(msg);
       return throwError(msg);
    }
+
 }

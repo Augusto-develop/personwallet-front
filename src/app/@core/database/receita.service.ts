@@ -1,4 +1,3 @@
-import {Carteira} from './carteira.service';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
@@ -83,7 +82,7 @@ export class ReceitaService {
       return this.httpClient.post<Receita>(this.endPoint, employee, this.httpOptions)
          .pipe(
             retry(1),
-            catchError(this.httpError)
+            catchError(this.httpError),
          );
    }
 

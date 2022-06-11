@@ -24,6 +24,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
             link: '/pages/cadastro/fornecedor',
          },
          {
+            title: 'Produtos',
+            link: '/pages/cadastro/produto',
+         },
+         {
             title: 'Despesas',
             link: '/pages/cadastro/despesa',
          },
@@ -42,6 +46,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
          {
             title: 'Movimento',
             link: '/pages/cadastro/movimento',
+         },
+         {
+            title: 'Cupom Fiscal',
+            link: '/pages/cadastro/cupomfiscal',
          },
       ],
    },

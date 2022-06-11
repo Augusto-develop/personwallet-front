@@ -34,8 +34,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MovimentoComponent} from './movimento/movimento.component';
 import {DialogCartPgComponent} from './despesa/dialog-cart-pg/dialog-cart-pg.component';
-import { DialogParcelaAllComponent } from './despesa/dialog-parcela-all/dialog-parcela-all.component';
-import { FornecedorComponent } from './fornecedor/fornecedor.component';
+import {DialogParcelaAllComponent} from './despesa/dialog-parcela-all/dialog-parcela-all.component';
+import {FornecedorComponent} from './fornecedor/fornecedor.component';
+import {ProdutoComponent} from './produto/produto.component';
+import {CupomfiscalComponent} from './cupomfiscal/cupomfiscal.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
    align: 'right',
@@ -92,6 +94,8 @@ const materialModules = [
       DialogCartPgComponent,
       DialogParcelaAllComponent,
       FornecedorComponent,
+      ProdutoComponent,
+      CupomfiscalComponent,
    ],
    providers: [
       {provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig}],

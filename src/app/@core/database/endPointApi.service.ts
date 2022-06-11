@@ -17,4 +17,7 @@ export const EndPointApi = {
    categoriassaldo: host2 + '/categorias/saldo',
    pagamentos: host2 + '/pagamentos',
    movimentos: host2 + '/movimentos',
+   produtos: host2 + '/produtos',
+   subcategorias: host2 + '/subcategorias',
+   despesaitems: host2 + '/despesaitems',
 };

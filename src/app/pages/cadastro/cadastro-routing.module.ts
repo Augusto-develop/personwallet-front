@@ -9,6 +9,8 @@ import {CategoriaComponent} from './categoria/categoria.component';
 import {PagamentoComponent} from './pagamento/pagamento.component';
 import {MovimentoComponent} from './movimento/movimento.component';
 import {FornecedorComponent} from './fornecedor/fornecedor.component';
+import {ProdutoComponent} from './produto/produto.component';
+import {CupomfiscalComponent} from './cupomfiscal/cupomfiscal.component';
 
 const routes2: Routes = [{
    path: '',
@@ -25,6 +27,10 @@ const routes2: Routes = [{
       {
          path: 'fornecedor',
          component: FornecedorComponent,
+      },
+      {
+         path: 'produto',
+         component: ProdutoComponent,
       },
       {
          path: 'despesa',
@@ -45,6 +51,10 @@ const routes2: Routes = [{
       {
          path: 'movimento',
          component: MovimentoComponent,
+      },
+      {
+         path: 'cupomfiscal',
+         component: CupomfiscalComponent,
       },
    ],
 }];

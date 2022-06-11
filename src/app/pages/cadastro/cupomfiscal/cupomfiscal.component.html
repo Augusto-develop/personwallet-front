@@ -1,0 +1,194 @@
+<nb-card>
+   <nb-card-header>Cumpom Fiscal Eletrônico - SAT</nb-card-header>
+   <nb-card-body>
+      <div class="row">
+         <div class="col-lg-8">
+            <input type="text" nbInput fullWidth placeholder="Chave de Acesso" maxlength="54" class="p-2"
+                   mask="0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000" [(ngModel)]="chaveacesso">
+         </div>
+         <nb-actions size="medium" fullWidth>
+            <nb-action matRipple style="cursor: pointer;" (click)="onPesquisaCupom()">
+               <nb-icon class="action-icon" icon="search-outline"></nb-icon>
+               <span>Pesquisar</span>
+            </nb-action>
+         </nb-actions>
+      </div>
+   </nb-card-body>
+</nb-card>
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+   <nb-card>
+      <nb-card-header>Fatura</nb-card-header>
+      <nb-card-body>
+         <div class="dark-layout pag-layout">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="row">
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 200px">
+                           <mat-label>Fatura</mat-label>
+                           <mat-select class="pb-2" formControlName="fatura">
+                              <mat-option matRipple *ngFor="let itemfatura of faturasSelect" value="{{itemfatura.id}}">
+                                 {{itemfatura.descricao}}
+                              </mat-option>
+                           </mat-select>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 150px">
+                           <mat-label>Mês</mat-label>
+                           <mat-select class="pb-2" formControlName="mesfat">
+                              <mat-option matRipple *ngFor="let mes of mesesSelect"
+                                          value="{{mes.id}}">{{mes.descr}}</mat-option>
+                           </mat-select>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 70px">
+                           <mat-label>Ano</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="anofat">
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </nb-card-body>
+   </nb-card>
+   <nb-card>
+      <nb-card-header>Despesa</nb-card-header>
+      <nb-card-body>
+         <div class="dark-layout pag-layout">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="row">
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 150px">
+                           <mat-label>Data da Compra</mat-label>
+                           <input matInput autocomplete="off" formControlName="datacompra"
+                                  [matDatepicker]="picker" class="pb-2">
+                           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                           <mat-datepicker #picker></mat-datepicker>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 500px">
+                           <mat-label>Fornecedor</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="fornecedor">
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example">
+                           <mat-label>Valor</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="valortotal">
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 80px">
+                           <mat-label>Nº Parc</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="numparc">
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 80px">
+                           <mat-label>Qtde Parc</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="qtdeparc">
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 240px">
+                           <mat-label>Categoria</mat-label>
+                           <mat-select class="pb-2" formControlName="categoria">
+                              <mat-option matRipple *ngFor="let itemCategoria of categoriasSelect"
+                                          value="{{itemCategoria.id}}">
+                                 {{itemCategoria.descricao}}
+                              </mat-option>
+                           </mat-select>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </nb-card-body>
+   </nb-card>
+   <nb-card>
+      <nb-card-header>Items da Despesa</nb-card-header>
+      <nb-card-body>
+         <div class="dark-layout pag-layout">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="row" *ngFor="let itemcupom of itemsCupom;let i = index" >
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example">
+                           <mat-label>Produto</mat-label>
+                           <mat-select class="pb-2" formControlName="{{'itemproduto-' + i}}">
+                              <mat-option matRipple *ngFor="let itemproduto of produtosSelect"
+                                          value="{{itemproduto.id}}">
+                                 {{itemproduto.descricao}}
+                              </mat-option>
+                           </mat-select>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example" style="width: 500px">
+                           <mat-label>Descrição</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="{{'itemdescricao-' + i}}">
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example">
+                           <mat-label>Qtde</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="{{'itemqtde-' + i}}" >
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                     <div class="col-lg-auto">
+                        <mat-form-field class="input-example">
+                           <mat-label>Valor</mat-label>
+                           <label>
+                              <input matInput autocomplete="off" formControlName="{{'itemvalor-' + i}}">
+                           </label>
+                           <mat-hint></mat-hint>
+                        </mat-form-field>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </nb-card-body>
+   </nb-card>
+   <nb-card>
+      <nb-card-body>
+         <div class="row">
+            <div class="col-md-2">
+               <button type="submit" nbButton status="primary">Gravar</button>
+            </div>
+         </div>
+      </nb-card-body>
+   </nb-card>
+</form>
